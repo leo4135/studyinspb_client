@@ -1,4 +1,33 @@
 <script setup lang="ts">
+import {onMounted} from "vue";
+
+onMounted(() => {
+  const dynamicItem = document.querySelector('.dynamic_menu_item')
+  const allNav = document.querySelectorAll('.style_for_items_nav_menu')
+  const coordNav = document.querySelector('nav')
+  getFirstPositionForHaderMenuEffect(dynamicItem, allNav[0])
+  allNav.forEach(item => {
+    item.onclick = () => {
+      document.querySelector('header').childNodes[0].childNodes[0].childNodes[0].childNodes[1].childNodes.forEach(it => {
+        it.childNodes[0] === undefined ? console.log('undef') : it.childNodes[0].style.color = '#000000'
+      })
+      dynamicItem.style.left = item.getBoundingClientRect().x - coordNav.getBoundingClientRect().x + 'px'
+      dynamicItem.style.height = item.getBoundingClientRect().height + 'px'
+      dynamicItem.style.width = item.getBoundingClientRect().width + 'px'
+      dynamicItem.style.padding = 25 + 'px'
+      item.childNodes[0].style.color = '#FFFFFF';
+    }
+
+  })
+
+  function getFirstPositionForHaderMenuEffect(dynamicElem, FirstElem) {
+    dynamicElem.style.left = FirstElem.getBoundingClientRect().x - coordNav.getBoundingClientRect().x + 'px'
+    dynamicElem.style.height = FirstElem.getBoundingClientRect().height + 'px'
+    dynamicElem.style.width = FirstElem.getBoundingClientRect().width + 'px'
+    FirstElem.childNodes[0].style.color = '#FFFFFF';
+  }
+})
+
 
 </script>
 
@@ -22,13 +51,15 @@
               </defs>
             </svg>
           </div>
-
           <nav>
-            <RouterLink to="/" style="background: #071937; padding: 0 25px; color: #FFFFFF; margin-left: 15px;">Главная</RouterLink>
-            <a href="/">Организации</a>
-            <RouterLink to="/programms">Программы</RouterLink>
-            <a href="/">Актуальное</a>
-            <a href="/">Контакты</a>
+            <div class="dynamic_menu_item"></div>
+            <RouterLink to="/" style=" margin-left: 15px;" class="style_for_items_nav_menu">
+              <span>Главная</span>
+            </RouterLink>
+            <RouterLink to="/organizations" class="style_for_items_nav_menu"><span>Организации</span></RouterLink>
+            <RouterLink to="/programms" class="style_for_items_nav_menu"><span>Программы</span></RouterLink>
+            <a href="/" class="style_for_items_nav_menu"><span>Актуальное</span></a>
+            <a href="/" class="style_for_items_nav_menu"><span>Контакты</span></a>
           </nav>
         </div>
         <div class="search_and_language">
@@ -58,6 +89,7 @@ header {
   gap: 10px;
   align-items: center;
 }
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -71,6 +103,7 @@ nav {
   line-height: 21px;
   min-height: 120px;
   text-transform: uppercase;
+  position: relative;
 }
 
 .search_and_language {
@@ -82,5 +115,28 @@ nav {
 a {
   display: flex;
   align-items: center;
+  z-index: 20;
 }
+
+.style_for_items_nav_menu {
+  padding: 0 25px;
+
+}
+
+.dynamic_menu_item {
+  position: absolute;
+  background: #071937;
+  color: #FFFFFF;
+  z-index: 10;
+  transition: all .5s linear;
+}
+
+span {
+  z-index: 20;
+}
+
+.changeColor {
+  color: #FFFFFF;
+}
+
 </style>

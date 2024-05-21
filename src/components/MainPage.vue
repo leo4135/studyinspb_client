@@ -4,7 +4,7 @@ import TextComponentAfterBanner from "./MainPage_Components/TextComponentAfterBa
 import Slider from "./MainPage_Components/Slider.vue";
 import News from "./MainPage_Components/News.vue";
 import Blogs from "./MainPage_Components/Blogs.vue";
-import Footer from "./MainPage_Components/Footer.vue";
+
 
 
 </script>
@@ -15,8 +15,6 @@ import Footer from "./MainPage_Components/Footer.vue";
   <Slider/>
   <News/>
   <Blogs/>
-  <Footer/>
-
 </template>
 
 <style scoped>

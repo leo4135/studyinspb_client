@@ -97,10 +97,19 @@ legend {
 a {
   color: #071937;
 }
+/* inputs in programms */
+.v-input__details {
+  display: none !important;
+}
+
+.v-field__overlay {
+opacity: 0 !important;
+}
 
 @media screen and (max-width: 1600px) {
   .wrapper {
     max-width: 1200px;
   }
 }
+
 
