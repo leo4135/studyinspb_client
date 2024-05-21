@@ -5,6 +5,7 @@ import CardEducation from "./PageForProgramms_Components/CardEducation.vue";
 
 const programms = [
   {
+    id: 1,
     name: 'Бизнес-аналитика и большие данные (Master in Business Analytics and Big Data - MiBA)',
     name_org: 'Санкт-Петербургский государственный университет ',
     level_education: 'Магистратура',
@@ -18,6 +19,7 @@ const programms = [
     ball_ege: '198'
   },
   {
+    id: 2,
     name: 'Бизнес-аналитика и большие данные (Master in Business Analytics and Big Data - MiBA)',
     name_org: 'Санкт-Петербургский государственный университет ',
     level_education: 'Магистратура',
@@ -31,6 +33,7 @@ const programms = [
     ball_ege: '198'
   },
   {
+    id: 3,
     name: 'Бизнес-аналитика и большие данные (Master in Business Analytics and Big Data - MiBA)',
     name_org: 'Санкт-Петербургский государственный университет ',
     level_education: 'Магистратура',
@@ -44,6 +47,7 @@ const programms = [
     ball_ege: '198'
   },
   {
+    id: 4,
     name: 'Бизнес-аналитика и большие данные (Master in Business Analytics and Big Data - MiBA)',
     name_org: 'Санкт-Петербургский государственный университет ',
     level_education: 'Магистратура',
@@ -63,7 +67,7 @@ const programms = [
 <template>
   <Banner h1="Поиск программ"/>
   <Filters/>
- <cardEducation v-for="card in programms" :card="card"></cardEducation>
+ <CardEducation v-for="card in programms" :card="card"></CardEducation>
 </template>
 
 <style scoped>
