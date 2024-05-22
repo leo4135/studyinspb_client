@@ -70,7 +70,7 @@ defineProps<{ card: string }>();
           </div>
 
           <p>проходной балл ЕГЭ: <span class="budget">{{ card.ball_ege }}</span></p>
-          <RouterLink :to="{ name: 'education_programs', params: { id: card.id } }"><span>Программы</span></RouterLink>
+          <RouterLink :to="{ name: 'education_programs', params: { id: card.id } }"><span>Подробнее</span></RouterLink>
         </div>
       </div>
     </div>
