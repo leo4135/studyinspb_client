@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import {onMounted} from "vue";
+import {routes} from "vue-router/auto-routes";
 
 onMounted(() => {
   const dynamicItem = document.querySelector('.dynamic_menu_item')
   const allNav = document.querySelectorAll('.style_for_items_nav_menu')
   const coordNav = document.querySelector('nav')
-  getFirstPositionForHaderMenuEffect(dynamicItem, allNav[0])
+  getFirstPositionForHeaderMenuEffect(dynamicItem, allNav[0])
   allNav.forEach(item => {
     item.onclick = () => {
       document.querySelector('header').childNodes[0].childNodes[0].childNodes[0].childNodes[1].childNodes.forEach(it => {
@@ -20,7 +21,7 @@ onMounted(() => {
 
   })
 
-  function getFirstPositionForHaderMenuEffect(dynamicElem, FirstElem) {
+  function getFirstPositionForHeaderMenuEffect(dynamicElem, FirstElem) {
     dynamicElem.style.left = FirstElem.getBoundingClientRect().x - coordNav.getBoundingClientRect().x + 'px'
     dynamicElem.style.height = FirstElem.getBoundingClientRect().height + 'px'
     dynamicElem.style.width = FirstElem.getBoundingClientRect().width + 'px'

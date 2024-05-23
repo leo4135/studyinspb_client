@@ -13,7 +13,7 @@ import 'vuetify/styles';
 import {createVuetify} from 'vuetify';
 import * as components from 'vuetify/components';
 import * as directives from 'vuetify/directives';
-
+import { test }  from '../data.ts'
 
 
 const vuetify = createVuetify({
@@ -43,91 +43,12 @@ createApp(App)
     .use(router)
     .mount('#app')
 
-export const useCounterStore = defineStore('counter', () => {
-    const count = ref({
-        arr: [
-            {
-                id: 1,
-                name: 'Бизнес-аналитика и большие данные (Master in Business Analytics and Big Data - MiBA)',
-                name_org: 'Санкт-Петербургский государственный университет ',
-                level_education: 'Магистратура',
-                form_education: 'Очное',
-                range_edu: "2",
-                lang_edu: 'английский',
-                free_mest: '1',
-                notFree_mest: '20',
-                cost_rus: '300000',
-                cost_all: '608700',
-                ball_ege: '198',
-                actual: true,
-                adress: 'Санкт-Петербург, Университетская набережная, д. 7/9',
-                rector: 'Кропачев Николай Михайлович',
-                info: 'Основная образовательная программа магистратуры «Бизнес-аналитика и большие данные (Master \n' +
-                    'in Business Analytics and Big Data - MiBA)» ставит своей целью формирование фундаментальных знаний \n' +
-                    'в области менеджмента, анализа больших данных и современных аналитических инструментов, применяемых для решения управленческих задач. Возможность пройти семестр включенного обучения за рубежом в одной из ведущих бизнес-школ из списка партнеров СПбГУ. '
-            },
-            {
-                id: 2,
-                name: 'Бизнес-аналитика и большие данные (Master in Business Analytics and Big Data - MiBA)',
-                name_org: 'Санкт-Петербургский государственный университет ',
-                level_education: 'Магистратура',
-                form_education: 'Очное',
-                range_edu: "2",
-                lang_edu: 'английский',
-                free_mest: '1',
-                notFree_mest: '20',
-                cost_rus: '300000',
-                cost_all: '608700',
-                ball_ege: '198',
-                adress: '',
-                actual: true,
-                rector: 'Кропачев Николай Михайлович',
-                info: 'Основная образовательная программа магистратуры «Бизнес-аналитика и большие данные (Master \n' +
-                    'in Business Analytics and Big Data - MiBA)» ставит своей целью формирование фундаментальных знаний \n' +
-                    'в области менеджмента, анализа больших данных и современных аналитических инструментов, применяемых для решения управленческих задач. Возможность пройти семестр включенного обучения за рубежом в одной из ведущих бизнес-школ из списка партнеров СПбГУ. '
-            },
-            {
-                id: 3,
-                name: 'Бизнес-аналитика и большие данные (Master in Business Analytics and Big Data - MiBA)',
-                name_org: 'Санкт-Петербургский государственный университет ',
-                level_education: 'Магистратура',
-                form_education: 'Очное',
-                range_edu: "2",
-                lang_edu: 'английский',
-                free_mest: '1',
-                notFree_mest: '20',
-                cost_rus: '300000',
-                cost_all: '608700',
-                ball_ege: '198',
-                actual: true,
-                rector: 'Кропачев Николай Михайлович',
-                info: 'Основная образовательная программа магистратуры «Бизнес-аналитика и большие данные (Master \n' +
-                    'in Business Analytics and Big Data - MiBA)» ставит своей целью формирование фундаментальных знаний \n' +
-                    'в области менеджмента, анализа больших данных и современных аналитических инструментов, применяемых для решения управленческих задач. Возможность пройти семестр включенного обучения за рубежом в одной из ведущих бизнес-школ из списка партнеров СПбГУ. '
-            },
-            {
-                id: 4,
-                name: 'Бизнес-аналитика и большие данные (Master in Business Analytics and Big Data - MiBA)',
-                name_org: 'Санкт-Петербургский государственный университет ',
-                level_education: 'Магистратура',
-                form_education: 'Очное',
-                range_edu: "2",
-                lang_edu: 'английский',
-                free_mest: '1',
-                notFree_mest: '20',
-                cost_rus: '300000',
-                cost_all: '608700',
-                ball_ege: '198',
-                actual: true,
-                rector: 'Кропачев Николай Михайлович',
-                info: 'Основная образовательная программа магистратуры «Бизнес-аналитика и большие данные (Master \n' +
-                    'in Business Analytics and Big Data - MiBA)» ставит своей целью формирование фундаментальных знаний \n' +
-                    'в области менеджмента, анализа больших данных и современных аналитических инструментов, применяемых для решения управленческих задач. Возможность пройти семестр включенного обучения за рубежом в одной из ведущих бизнес-школ из списка партнеров СПбГУ. '
-            }
-        ]
+export const useCounterStore = defineStore('mockData', () => {
+    const dataEducationPrograms = ref({
+        arr: test
     })
 
 
 
-    return { count }
+    return { dataEducationPrograms }
 })
