@@ -1,7 +1,41 @@
 <script setup lang="ts">
-defineProps<{ h1: string }>();
+
+import {useCounterStore} from '../../main.ts'
+import {storeToRefs} from "pinia";
+
+
+const store = useCounterStore()
+const { educationTabs } = storeToRefs(store)
+defineProps<{
+  h1: string,
+  p: string,
+  typePage: string
+}>();
+educationTabs.value = 'Бакалавриат';
+
+function changeColor(event) {
+
+  const allBtnReset = document.querySelectorAll('.btn_from_education');
+  allBtnReset.forEach(item => {
+    item.style.background = 'none';
+  })
+  event.style.background = '#071937';
+  switch (event.textContent) {
+    case 'ВО':
+      educationTabs.value = 'Бакалавриат'
+      break;
+    case 'СПО':
+      educationTabs.value = 'СПО'
+      break;
+    case 'ДПО':
+      educationTabs.value = 'ДПО'
+      break;
+  }
+  console.log(store.educationTabs)
+}
 
 </script>
+
 
 <template>
   <section class="banner">
@@ -26,13 +60,22 @@ defineProps<{ h1: string }>();
             <span> {{ h1 }} </span>
           </h1>
           <h1>
-            Здесь можно найти лучшие <br>
-            образовательные программы в вузах <br>
-            и колледжах в Санкт-Петербурге
+            {{ p }}
           </h1>
-          <div class="group_buttons">
+          <div class="group_buttons" v-if="typePage == 'main'">
             <button>Организации</button>
             <button>Программы</button>
+          </div>
+          <div class="container_for_types_education" v-if="typePage == 'education'">
+            <button class="btn_from_education" @click="changeColor($event.target)">ВО</button>
+            <button class="btn_from_education" @click="changeColor($event.target)">СПО</button>
+            <button class="btn_from_education" @click="changeColor($event.target)">ДПО</button>
+            <button class="btn_from_education" @click="changeColor($event.target)">Калькулятор ЕГЭ</button>
+          </div>
+          <div class="container_for_types_organization" v-if="typePage == 'organization'">
+            <button class="btn_from_education" @click="changeColor($event.target)">вузы</button>
+            <button class="btn_from_education" @click="changeColor($event.target)">колледжи</button>
+            <button class="btn_from_education" @click="changeColor($event.target)">научные организации</button>
           </div>
         </div>
       </div>
@@ -42,6 +85,7 @@ defineProps<{ h1: string }>();
 </template>
 
 <style scoped>
+
 .banner {
   width: 100%;
   height: 70vh;
@@ -54,7 +98,6 @@ defineProps<{ h1: string }>();
   align-items: center;
   height: inherit;
   gap: 10px;
-  text-transform: uppercase;
 }
 
 h1 {
@@ -62,6 +105,9 @@ h1 {
   line-height: 60px;
   font-size: 38px;
   font-weight: 400;
+  display: flex;
+  justify-content: center;
+  text-align: center;
 }
 
 span {
@@ -73,6 +119,7 @@ span {
   flex-direction: column;
   justify-content: center;
   gap: 30px;
+  max-width: 52%;
 }
 
 .group_buttons {
@@ -102,6 +149,112 @@ span {
 }
 
 .group_buttons button:nth-child(2):hover {
+  background: #071937;
+  border: 1px solid #071937;
+}
+
+.container_for_types_education {
+  display: flex;
+  justify-content: space-between;
+
+}
+
+.container_for_types_organization {
+  display: flex;
+  gap: 50px;
+}
+
+.container_for_types_education button:nth-child(1) {
+  color: #FFFFFF;
+  padding: 15px 20px;
+  font-size: 20px;
+  width: 15%;
+  border-radius: 50px;
+  background-color: #071937;
+}
+
+
+.container_for_types_education button:nth-child(1):hover {
+  background: #071937;
+  border: 1px solid #071937;
+}
+
+.container_for_types_education button:nth-child(2) {
+  color: #FFFFFF;
+  padding: 15px 20px;
+  font-size: 20px;
+  width: 15%;
+  border-radius: 50px;
+}
+
+.container_for_types_education button:nth-child(2):hover {
+  background-color: #071937;
+  border: 1px solid #071937;
+}
+
+.container_for_types_education button:nth-child(3) {
+  color: #FFFFFF;
+  padding: 15px 20px;
+  font-size: 20px;
+  width: 15%;
+  border-radius: 50px;
+}
+
+.container_for_types_education button:nth-child(3):hover {
+  background: #071937;
+  border: 1px solid #071937;
+}
+
+.container_for_types_education button:nth-child(4) {
+  color: #FFFFFF;
+  padding: 15px 20px;
+  font-size: 20px;
+  border: 1px solid #FFFFFF;
+  border-radius: 50px;
+}
+
+.container_for_types_education button:nth-child(4):hover {
+  background: #071937;
+  border: 1px solid #071937;
+}
+
+.container_for_types_organization button:nth-child(1) {
+  color: #FFFFFF;
+  padding: 15px 20px;
+  font-size: 20px;
+  width: 15%;
+  border-radius: 50px;
+  background-color: #071937;
+}
+
+
+.container_for_types_organization button:nth-child(1):hover {
+  background: #071937;
+  border: 1px solid #071937;
+}
+
+.container_for_types_organization button:nth-child(2) {
+  color: #FFFFFF;
+  padding: 15px 20px;
+  font-size: 20px;
+  width: 15%;
+  border-radius: 50px;
+}
+
+.container_for_types_organization button:nth-child(2):hover {
+  background-color: #071937;
+  border: 1px solid #071937;
+}
+
+.container_for_types_organization button:nth-child(3) {
+  color: #FFFFFF;
+  padding: 15px 20px;
+  font-size: 20px;
+  width: fit-content;
+  border-radius: 50px;
+}
+
+.container_for_types_organization button:nth-child(3):hover {
   background: #071937;
   border: 1px solid #071937;
 }

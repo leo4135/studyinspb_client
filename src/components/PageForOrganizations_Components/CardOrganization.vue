@@ -60,12 +60,12 @@ defineProps<{ card: string }>();
 
           <div class="container_for_attr_cards">
             <div class="mesta">
-              <p>количество мест: бюджет <span class="budget">{{ card.numberBudgetPlaces }}</span></p>
-              <p>контракт: <span class="contr">{{ card.numberContractPlaces }}</span></p>
+              <p>количество мест: бюджет <span class="budget">{{ card.free_mest }}</span></p>
+              <p>контракт: <span class="contr">{{ card.notFree_mest }}</span></p>
             </div>
             <div class="price">
-              <p>стоимость обучения в год для граждан РФ: <span class="budget">{{ card.costYear }}</span></p>
-              <p>для иностранных граждан:  <span class="budget">{{ card.costYearForeigners }}</span></p>
+              <p>стоимость обучения в год для граждан РФ: <span class="budget">{{ card.cost_rus }}</span></p>
+              <p>для иностранных граждан:  <span class="budget">{{ card.cost_all }}</span></p>
             </div>
           </div>
 

@@ -10,7 +10,9 @@ import Blogs from "./MainPage_Components/Blogs.vue";
 </script>
 
 <template>
-  <Banner h1="Привет!" />
+  <Banner h1="ПРИВЕТ!" p="ЗДЕСЬ МОЖНО НАЙТИ ЛУЧШИЕ
+            ОБРАЗОВАТЕЛЬНЫЕ ПРОГРАММЫ В ВУЗАХ
+            И КОЛЛЕДЖАХ В САНКТ-ПЕТЕРБУРГЕ" typePage="main" />
   <TextComponentAfterBanner/>
   <Slider/>
   <News/>

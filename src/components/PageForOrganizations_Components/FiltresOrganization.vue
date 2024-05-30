@@ -6,21 +6,21 @@ import {storeToRefs} from "pinia";
 
 const itemsOrganizations = [];
 const itemsProgramms = [];
-let itemsLevelEducation = [];
+const itemsLevelEducation = [];
 let formEducation = [];
 
 
 const store = useCounterStore();
 const { filtres } = storeToRefs(store)
 
-    store.dataEducationPrograms.arr.forEach((item) =>{
-      itemsOrganizations.push(item.organization.shortTitle)
-      itemsProgramms.push(item.title)
-      itemsLevelEducation.push(item.educationLevel.title)
-      formEducation.push(item.educationForm.name)
-    })
+store.dataEducationPrograms.arr.forEach((item) =>{
+  itemsOrganizations.push(item.organization.shortTitle)
+  itemsProgramms.push(item.title)
+  itemsLevelEducation.push(item.educationLevel.title)
+  formEducation.push(item.educationForm.name)
+})
 formEducation = [... new Set(formEducation)]
-itemsLevelEducation = [... new Set(itemsLevelEducation)]
+
 const value = ref([0, 800000])
 
 

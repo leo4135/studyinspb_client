@@ -1,17 +1,25 @@
 <script setup lang="ts">
 
-defineProps<{ item: object }>()
+defineProps<{
+  item: {
+    type: object,
+    h1 : string,
+    picture: string,
+    p: string,
+    tags: Array<string>
+  }
+}>()
 </script>
 
 <template>
 
   <div class="card">
-    <div class="container_for_img" :style="{backgroundImage: `url(${item.picture})`}"></div>
+    <div class="container_for_img" :style="{backgroundImage: `url(${item?.picture})`}"></div>
     <div class="container_for_text">
-      <h1>{{ item.h1 }}</h1>
-      <p>{{ item.p }}</p>
+      <h1>{{ item?.h1 }}</h1>
+      <p>{{ item?.p }}</p>
       <div class="container_for_tag_and_btn">
-        <span>{{ item.tags }}</span>
+        <span>{{ item?.tags }}</span>
         <button>
           <svg width="40" height="41" viewBox="0 0 40 41" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g clip-path="url(#clip0_4045_1543)">

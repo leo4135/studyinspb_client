@@ -47,8 +47,9 @@ export const useCounterStore = defineStore('mockData', () => {
     const dataEducationPrograms = ref({
         arr: test
     })
+    const educationTabs = ref('ВО')
+    const filtres = ref([])
 
 
-
-    return { dataEducationPrograms }
+    return { dataEducationPrograms, educationTabs, filtres }
 })
