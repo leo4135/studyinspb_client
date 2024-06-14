@@ -2,25 +2,25 @@
 
 defineProps<{
   item: {
-    type: object,
-    h1 : string,
-    picture: string,
-    p: string,
-    tags: Array<string>
+    heading: object,
+    description : string,
+    path: string,
+    tags: string
   }
 }>()
+
 </script>
 
 <template>
 
   <div class="card">
-    <div class="container_for_img" :style="{backgroundImage: `url(${item?.picture})`}"></div>
+    <div class="container_for_img" :style='{backgroundImage: `url(.${item.path})`}'></div>
     <div class="container_for_text">
-      <h1>{{ item?.h1 }}</h1>
-      <p>{{ item?.p }}</p>
+      <h1>{{ item?.heading }}</h1>
+      <p>{{ item?.description }}</p>
       <div class="container_for_tag_and_btn">
-        <span>{{ item?.tags }}</span>
-        <button>
+        <span>{{'#' +  item?.tags }}</span>
+        <RouterLink class="style_card" :to="{ name: 'news', params: { id: item.id } }">
           <svg width="40" height="41" viewBox="0 0 40 41" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g clip-path="url(#clip0_4045_1543)">
               <path
@@ -36,7 +36,8 @@ defineProps<{
               </clipPath>
             </defs>
           </svg>
-        </button>
+
+        </RouterLink>
       </div>
     </div>
   </div>
@@ -45,21 +46,30 @@ defineProps<{
 
 <style scoped>
 
+.card {
+  width: 424px;
+}
+
 .container_for_img {
-  width: 100%;
-  height: 250px;
-  background-size: cover;
+  width: 424px;
+  height: 240px;
+  background-size: contain;
+  background-repeat: no-repeat;
   background-position-x: center;
   background-position-y: center;
 }
 
 h1 {
-  font-size: 26px;
+  font-size: 20px;
   font-weight: 700;
 }
 
-span {
+p {
   font-size: 14px;
+}
+span {
+  font-size: 12px;
+  font-weight: bold;
 }
 
 .container_for_text {
@@ -74,5 +84,30 @@ span {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+@media screen and (max-width: 480px) {
+  .card {
+    width: 100%
+  }
+  .container_for_img {
+    width: 100%;
+    height: 240px;
+  }
+
+}
+
+@media screen and (max-width: 460px) {
+  .container_for_img {
+    height: 220px;
+  }
+
+}
+
+@media screen and (max-width: 435px) {
+  .container_for_img {
+    height: 210px;
+  }
+
 }
 </style>

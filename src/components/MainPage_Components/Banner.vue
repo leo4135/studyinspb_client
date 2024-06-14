@@ -2,10 +2,11 @@
 
 import {useCounterStore} from '../../main.ts'
 import {storeToRefs} from "pinia";
+import {computed, ref, watch} from "vue";
 
 
 const store = useCounterStore()
-const { educationTabs } = storeToRefs(store)
+const {educationTabs, calculatorEGE} = storeToRefs(store)
 defineProps<{
   h1: string,
   p: string,
@@ -22,18 +23,51 @@ function changeColor(event) {
   event.style.background = '#071937';
   switch (event.textContent) {
     case 'ВО':
-      educationTabs.value = 'Бакалавриат'
+      educationTabs.value = 'Основное'
       break;
     case 'СПО':
-      educationTabs.value = 'СПО'
+      educationTabs.value = 'Среднее'
       break;
     case 'ДПО':
-      educationTabs.value = 'ДПО'
+      educationTabs.value = 'Дополнительное'
+      break;
+    case 'вузы':
+      educationTabs.value = 'государственные вузы'
+      break;
+    case 'колледжи':
+      educationTabs.value = 'государственные колледжи'
       break;
   }
   console.log(store.educationTabs)
 }
 
+// реактивность для калькулятора
+let calculator = ref({
+  math: '',
+  rus: '',
+  hist: '',
+  inf: '',
+  lit: '',
+  bio: '',
+  phys: '',
+  foreign: '',
+  soc: '',
+  chem: ''
+});
+
+function validateEge() {
+  Object.keys(calculator.value).forEach(key => {
+    if (calculator.value[key] > 100) {
+      calculator.value[key] = 100;
+    } else if (calculator.value[key] < 0) {
+      calculator.value[key] = 100;
+    }
+  })
+}
+
+function getValues() {
+  calculatorEGE.value = calculator;
+}
 </script>
 
 
@@ -56,26 +90,93 @@ function changeColor(event) {
           </svg>
         </div>
         <div class="right_menu_banner">
-          <h1>
+          <h1 class="main_page" v-if="typePage == 'main'">
             <span> {{ h1 }} </span>
           </h1>
-          <h1>
+          <h1 class="all_pages" v-else-if="typePage == 'education' || 'organization'">
+            <span> {{ h1 }} </span>
+          </h1>
+          <h1 class="main_page" v-if="typePage == 'main'">
             {{ p }}
           </h1>
+          <p v-else-if="typePage == 'education' || 'organization'"> {{ p }} </p>
           <div class="group_buttons" v-if="typePage == 'main'">
-            <button>Организации</button>
-            <button>Программы</button>
+            <RouterLink class="main_btn_org" to="/organizations">Организации</RouterLink>
+            <RouterLink to="/programs" class="main_btn_prog">Программы</RouterLink>
           </div>
           <div class="container_for_types_education" v-if="typePage == 'education'">
             <button class="btn_from_education" @click="changeColor($event.target)">ВО</button>
             <button class="btn_from_education" @click="changeColor($event.target)">СПО</button>
             <button class="btn_from_education" @click="changeColor($event.target)">ДПО</button>
-            <button class="btn_from_education" @click="changeColor($event.target)">Калькулятор ЕГЭ</button>
+            <button class="btn_from_education" @click="changeColor($event.target)">
+              <RouterLink to="/calculator" class="ege">Калькулятор ЕГЭ</RouterLink>
+            </button>
           </div>
           <div class="container_for_types_organization" v-if="typePage == 'organization'">
             <button class="btn_from_education" @click="changeColor($event.target)">вузы</button>
             <button class="btn_from_education" @click="changeColor($event.target)">колледжи</button>
             <button class="btn_from_education" @click="changeColor($event.target)">научные организации</button>
+          </div>
+
+
+          <div class="calculator" v-if="typePage == 'calculator'">
+
+            <div class="container_for_sub">
+            <div class="ege">
+
+              <div class="ege_block">
+                <span class="span_ege">МАТЕМАТИКА</span><input class="input_style_ege" v-model="calculator.math"
+                                                               @input="validateEge()" data-subject="math"/>
+
+              </div>
+              <div class="ege_block">
+                <span class="span_ege">РУССКИЙ ЯЗЫК</span><input class="input_style_ege" v-model="calculator.rus"
+                                                                 @input="validateEge()" data-subject="rus"/>
+              </div>
+              <div class="ege_block">
+                <span class="span_ege">ИНФОРМАТИКА</span><input class="input_style_ege" v-model="calculator.inf"
+                                                                @input="validateEge()" data-subject="inf"/>
+              </div>
+              <div class="ege_block">
+                <span class="span_ege">ЛИТЕРАТУРА</span><input class="input_style_ege" v-model="calculator.lit"
+                                                               @input="validateEge()" data-subject="lit"/>
+              </div>
+              <div class="ege_block">
+                <span class="span_ege">БИОЛОГИЯ</span><input class="input_style_ege" v-model="calculator.bio"
+                                                             @input="validateEge()" data-subject="bio"/>
+              </div>
+            </div>
+
+            <div class="ege">
+              <div class="ege_block">
+                <span class="span_ege">ИСТОРИЯ</span><input @input="validateEge()" v-model="calculator.hist"
+                                                            class="input_style_ege" data-subject="hist"/>
+              </div>
+
+              <div class="ege_block">
+                <span class="span_ege">ФИЗИКА</span><input @input="validateEge()" v-model="calculator.phys"
+                                                            class="input_style_ege" data-subject="phys"/>
+              </div>
+
+              <div class="ege_block">
+                <span class="span_ege">ИНОСТРАННЫЙ ЯЗЫК</span><input @input="validateEge()" v-model="calculator.foreign"
+                                                            class="input_style_ege" data-subject="lang"/>
+              </div>
+
+              <div class="ege_block">
+                <span class="span_ege">ОБЩЕСТВОЗНАНИЕ</span><input @input="validateEge()" v-model="calculator.soc"
+                                                            class="input_style_ege" data-subject="soc"/>
+              </div>
+
+              <div class="ege_block">
+                <span class="span_ege">ХИМИЯ</span><input @input="validateEge()" v-model="calculator.chem"
+                                                            class="input_style_ege" data-subject="chem"/>
+              </div>
+
+            </div>
+          </div>
+            <button class="main_btn_org" @click="getValues()">НАЙТИ</button>
+
           </div>
         </div>
       </div>
@@ -88,8 +189,8 @@ function changeColor(event) {
 
 .banner {
   width: 100%;
-  height: 70vh;
   background: #4CC6C6;
+  padding: 50px 100px;
 }
 
 .main_container {
@@ -100,18 +201,31 @@ function changeColor(event) {
   gap: 10px;
 }
 
-h1 {
+.all_pages {
   color: #FFFFFF;
   line-height: 60px;
-  font-size: 38px;
+  font-size: 32px;
   font-weight: 400;
   display: flex;
   justify-content: center;
   text-align: center;
 }
 
+.main_page {
+  color: #FFFFFF;
+  line-height: 60px;
+  font-size: 32px;
+  font-weight: 400;
+}
+
 span {
   color: #071937;
+}
+
+p {
+  font-size: 18px;
+  color: #FFFFFF;
+  text-align: center;
 }
 
 .right_menu_banner {
@@ -127,7 +241,7 @@ span {
   gap: 30px;
 }
 
-.group_buttons button:nth-child(1) {
+.main_btn_org {
   border-radius: 25px;
   background: #071937;
   border: 1px solid #071937;
@@ -135,21 +249,25 @@ span {
   padding: 15px 20px;
 }
 
-.group_buttons button:nth-child(1):hover {
-  background: none;
+.ege {
+  color: #FFFFFF;
+}
+
+.main_btn_org:hover {
+ opacity: 0.8;
   border: 1px solid #FFFFFF;
   color: #FFFFFF;
 }
 
-.group_buttons button:nth-child(2) {
+.main_btn_prog {
   border-radius: 25px;
   border: 1px solid #FFFFFF;
   color: #FFFFFF;
   padding: 15px 20px;
 }
 
-.group_buttons button:nth-child(2):hover {
-  background: #071937;
+.main_btn_prog:hover {
+  opacity: 0.75;
   border: 1px solid #071937;
 }
 
@@ -161,13 +279,14 @@ span {
 
 .container_for_types_organization {
   display: flex;
+  justify-content: center;
   gap: 50px;
 }
 
 .container_for_types_education button:nth-child(1) {
   color: #FFFFFF;
   padding: 15px 20px;
-  font-size: 20px;
+  font-size: 16px;
   width: 15%;
   border-radius: 50px;
   background-color: #071937;
@@ -182,7 +301,7 @@ span {
 .container_for_types_education button:nth-child(2) {
   color: #FFFFFF;
   padding: 15px 20px;
-  font-size: 20px;
+  font-size: 16px;
   width: 15%;
   border-radius: 50px;
 }
@@ -195,7 +314,7 @@ span {
 .container_for_types_education button:nth-child(3) {
   color: #FFFFFF;
   padding: 15px 20px;
-  font-size: 20px;
+  font-size: 16px;
   width: 15%;
   border-radius: 50px;
 }
@@ -208,7 +327,7 @@ span {
 .container_for_types_education button:nth-child(4) {
   color: #FFFFFF;
   padding: 15px 20px;
-  font-size: 20px;
+  font-size: 16px;
   border: 1px solid #FFFFFF;
   border-radius: 50px;
 }
@@ -221,10 +340,11 @@ span {
 .container_for_types_organization button:nth-child(1) {
   color: #FFFFFF;
   padding: 15px 20px;
-  font-size: 20px;
-  width: 15%;
+  font-size: 16px;
+  width: fit-content;
   border-radius: 50px;
   background-color: #071937;
+  border: 1px solid #4CC6C6;
 }
 
 
@@ -236,9 +356,10 @@ span {
 .container_for_types_organization button:nth-child(2) {
   color: #FFFFFF;
   padding: 15px 20px;
-  font-size: 20px;
-  width: 15%;
+  font-size: 16px;
+  width: fit-content;
   border-radius: 50px;
+  border: 1px solid #4CC6C6;
 }
 
 .container_for_types_organization button:nth-child(2):hover {
@@ -249,14 +370,88 @@ span {
 .container_for_types_organization button:nth-child(3) {
   color: #FFFFFF;
   padding: 15px 20px;
-  font-size: 20px;
+  font-size: 16px;
   width: fit-content;
   border-radius: 50px;
+  border: 1px solid #4CC6C6;
 }
 
 .container_for_types_organization button:nth-child(3):hover {
   background: #071937;
   border: 1px solid #071937;
+}
+
+
+.container_for_sub {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+}
+
+.ege {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: stretch;
+}
+
+.ege_block {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.calculator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
+}
+
+.input_style_ege {
+  width: 70px;
+  height: 50px;
+  border-radius: 50px;
+  background: #FFFFFF;
+  text-align: center;
+  font-size: 16px;
+  padding: 10px;
+  color: #000000;
+  transition: all 0.3s linear;
+}
+
+.input_style_ege:focus {
+  box-shadow: 5px 5px 5px #000;
+}
+
+@media screen and (max-width: 900px) {
+  .main_container {
+    flex-direction: column;
+  }
+  .right_menu_banner {
+   max-width: 100%;
+  }
+
+  .main_page {
+    line-height: 40px;
+    font-size: 24px;
+    text-align: center;
+  }
+
+  .banner {
+    padding: 10px 30px;
+  }
+
+  .right_menu_banner {
+    gap: 5px;
+  }
+
+  .group_buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
 }
 
 </style>

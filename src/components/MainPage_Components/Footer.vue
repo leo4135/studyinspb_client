@@ -25,42 +25,50 @@
           </address>
 
         </div>
-        <div class="container">
-          <a href="" class="main_a">ОРГАНИЗАЦИИ</a>
-          <a>Справочник вузов</a>
-          <a>Справочник колледжей</a>
-          <a>Справочник научных организаций</a>
+
+        <div class="group_menu_footer">
+          <div class="container">
+            <a href="" class="main_a">ОРГАНИЗАЦИИ</a>
+            <a>Справочник вузов</a>
+            <a>Справочник колледжей</a>
+            <a>Справочник научных организаций</a>
+          </div>
+          <div class="container">
+            <a href="" class="main_a">ПРОГРАММЫ</a>
+            <a>Поиск программ </a>
+            <a>Калькулятор ЕГЭ</a>
+          </div>
         </div>
-        <div class="container">
-          <a href="" class="main_a">ПРОГРАММЫ</a>
-          <a>Поиск программ </a>
-          <a>Калькулятор ЕГЭ</a>
-        </div>
-        <div class="container">
-          <a href="" class="main_a">АКТУАЛЬНОЕ</a>
-          <a>Новости и анонсы</a>
-          <a>Блоги</a>
-        </div>
-        <div class="container">
-          <a href="" class="main_a">КОНТАКТЫ</a>
-        </div>
-        <div class="container">
-          <a href="" class="main_a">МЫ В СОЦ СЕТЯХ</a>
-          <a>Vkontakte</a>
+
+        <div class="group_menu_footer">
+          <div class="container">
+            <a href="" class="main_a">АКТУАЛЬНОЕ</a>
+            <a>Новости и анонсы</a>
+            <a>Блоги</a>
+          </div>
+          <div class="container">
+            <a href="" class="main_a">КОНТАКТЫ</a>
+          </div>
+
+          <div class="container">
+            <a href="" class="main_a">МЫ В СОЦ СЕТЯХ</a>
+            <a>Vkontakte</a>
+          </div>
         </div>
 
       </div>
+
     </div>
 
     <div class="last_footer_container">
       <div class="wrapper">
-<div class="container_for_last_footer">
-  <p>
-    © STUDYINSPB 2024
-  </p>
-  <p>политика конфеденциальности</p>
-  <p>файлы Cookie</p>
-</div>
+        <div class="container_for_last_footer">
+          <p>
+            © STUDYINSPB 2024
+          </p>
+          <p>политика конфеденциальности</p>
+          <p>файлы Cookie</p>
+        </div>
       </div>
     </div>
   </footer>
@@ -90,6 +98,11 @@ address {
   gap: 3%;
 }
 
+.group_menu_footer {
+  display: flex;
+  gap: 3%;
+}
+
 .last_footer_container {
   background: rgba(7, 25, 55, 1);
   width: 100%;
@@ -105,5 +118,29 @@ address {
 p {
   font-size: 14px;
   font-weight: 200;
+}
+
+@media screen and (max-width: 1300px) {
+  .wrapper {
+    max-width: 90%;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .group_menu_footer {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+@media screen and (max-width: 560px) {
+  .first_footer_container_for_menu {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .container_for_last_footer {
+    flex-direction: column;
+  }
 }
 </style>

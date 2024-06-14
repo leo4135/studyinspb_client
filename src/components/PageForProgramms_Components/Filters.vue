@@ -1,29 +1,57 @@
 <script setup lang="ts">
 
-import {computed, ref, watch} from "vue";
+import {defineEmits, reactive, watch} from 'vue'
+import { ref } from "vue";
 import { useCounterStore } from '../../main.ts'
-import {storeToRefs} from "pinia";
+import { storeToRefs } from "pinia";
 
-const itemsOrganizations = [];
-const itemsProgramms = [];
-let itemsLevelEducation = [];
-let formEducation = [];
 
+
+// массив для хранения типа организаций
+const itemsEducations = ref([]);
+const itemsTypes = ref([]);
+let value = ref([0 , 300000]);
+
+
+const dataFromInputs = reactive({});
+
+const emit = defineEmits(['sendDataFromInputs', 'resetAllFilters']);
+
+const sendDataFromInputs = () => {
+  emit('sendDataFromInputs', dataFromInputs);
+}
+
+const resetAllFilters = () => {
+  emit('resetAllFilters');
+}
 
 const store = useCounterStore();
-const { filtres } = storeToRefs(store)
+const { educationTabs } = storeToRefs(store);
+educationTabs.value = "Основное";
 
-    store.dataEducationPrograms.arr.forEach((item) =>{
-      itemsOrganizations.push(item.organization.shortTitle)
-      itemsProgramms.push(item.title)
-      itemsLevelEducation.push(item.educationLevel.title)
-      formEducation.push(item.educationForm.name)
-    })
-formEducation = [... new Set(formEducation)]
-itemsLevelEducation = [... new Set(itemsLevelEducation)]
-const value = ref([0, 800000])
+// подписываемся на обновления стора
+store.$subscribe(() => {
+  store.dataEducationPrograms.forEach(item => {
+    // при переходе между вкладками, необходимо обнулить массив с организацями, чтобы снова проитерироваться
+    // по ним и запушить в массив только те, что подходят по типу
+
+    if (item.type == educationTabs.value) {
+      itemsEducations.value.push(item.title);
+      itemsTypes.value.push(item.type);
+    }
+  });
+})
+
+watch(educationTabs, () => {
+  itemsEducations.value = [];
+  itemsTypes.value = [];
+})
 
 
+const resetFilters = () => {
+  delete dataFromInputs.title
+  delete dataFromInputs.type
+}
 
 </script>
 
@@ -35,10 +63,10 @@ const value = ref([0, 800000])
                   multiple
                   chips
                   label="наименование образовательной программы"
-                  :items="itemsProgramms"
-                  :return-object="true"
-                  v-model="filtres"
-                  @input.native = "filtres = $event.srcElement.value"
+                  :items="[...new Set(itemsEducations)]"
+                  :single-line='true'
+                  v-model="dataFromInputs.title"
+                  @input.native = "dataFromInputs.title = $event.srcElement.value"
       ></v-combobox>
 
       <v-combobox class="search_input"
@@ -48,7 +76,7 @@ const value = ref([0, 800000])
                   label="наименование организации"
                   :items="itemsOrganizations"
       ></v-combobox>
-      <button class="search" >Найти</button>
+      <button class="search" @click="sendDataFromInputs">Найти</button>
     </div>
 
     <div class="container_for_other_filtres" style="margin-top: 20px">
@@ -218,6 +246,12 @@ const value = ref([0, 800000])
 
 .filtres:hover {
   background: #D6D6EB;
+}
+
+@media screen and (max-width: 1100px) {
+  .container_for_filtres {
+    flex-direction: column;
+  }
 }
 
 </style>

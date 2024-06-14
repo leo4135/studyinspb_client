@@ -1,28 +1,51 @@
 <script setup lang="ts">
-
-import {computed, ref, watch} from "vue";
+import { defineEmits, reactive } from 'vue'
+import { ref } from "vue";
 import { useCounterStore } from '../../main.ts'
-import {storeToRefs} from "pinia";
+import { storeToRefs } from "pinia";
 
-const itemsOrganizations = [];
-const itemsProgramms = [];
-const itemsLevelEducation = [];
-let formEducation = [];
 
+
+// массив для хранения типа организаций
+const itemsOrganizations = ref([]);
+const itemsTypes = ref([]);
+
+
+const dataFromInputs = reactive({});
+
+const emit = defineEmits(['sendDataFromInputs', 'resetAllFilters']);
+
+const sendDataFromInputs = () => {
+  emit('sendDataFromInputs', dataFromInputs);
+}
+
+const resetAllFilters = () => {
+  emit('resetAllFilters');
+}
 
 const store = useCounterStore();
-const { filtres } = storeToRefs(store)
+const {educationTabs} = storeToRefs(store)
+educationTabs.value = "государственные вузы";
 
-store.dataEducationPrograms.arr.forEach((item) =>{
-  itemsOrganizations.push(item.organization.shortTitle)
-  itemsProgramms.push(item.title)
-  itemsLevelEducation.push(item.educationLevel.title)
-  formEducation.push(item.educationForm.name)
+// подписываемся на обновления стора
+store.$subscribe(() => {
+  store.dataOrganizations.forEach(item => {
+    // при переходе между вкладками, необходимо обнулить массив с организацями, чтобы снова проитерироваться
+    // по ним и запушить в массив только те, что подходят по типу
+    itemsOrganizations.value = [];
+    itemsTypes.value = [];
+    if (item.type == educationTabs.value) {
+      itemsOrganizations.value.push(item.shortTitle);
+      itemsTypes.value.push(item.type);
+    }
+  });
 })
-formEducation = [... new Set(formEducation)]
 
-const value = ref([0, 800000])
 
+const resetFilters = () => {
+  delete dataFromInputs.title
+  delete dataFromInputs.type
+}
 
 
 </script>
@@ -30,25 +53,18 @@ const value = ref([0, 800000])
 <template>
   <div class="wrapper" style="margin-top: 50px;">
     <div class="container_for_main_filtres">
-      <v-combobox class="search_input"
-                  clearable
-                  multiple
-                  chips
-                  label="наименование образовательной программы"
-                  :items="itemsProgramms"
-                  :return-object="true"
-                  v-model="filtres"
-                  @input.native = "filtres = $event.srcElement.value"
-      ></v-combobox>
-
-      <v-combobox class="search_input"
+      <v-combobox class="search_input_main"
                   clearable
                   multiple
                   chips
                   label="наименование организации"
-                  :items="itemsOrganizations"
+                  :items="[...new Set(itemsOrganizations)]"
+                  :single-line='true'
+                  :return-object="true"
+                  v-model="dataFromInputs.title"
+                  @input.native = "dataFromInputs.title = $event.srcElement.value"
       ></v-combobox>
-      <button class="search" >Найти</button>
+      <button class="search" @click="sendDataFromInputs">Найти</button>
     </div>
 
     <div class="container_for_other_filtres" style="margin-top: 20px">
@@ -56,63 +72,17 @@ const value = ref([0, 800000])
         <v-expansion-panel title="дополнительные фильтры">
           <v-expansion-panel-text>
             <div class="container_for_filtres">
-              <v-combobox class="search_input"
-                          clearable
-                          multiple
-                          chips
-                          label="уровень образования"
-                          :items="itemsLevelEducation"
-              ></v-combobox>
               <v-combobox
                   class="search_input"
                   clearable
                   multiple
                   chips
-                  label="форма обучения"
-                  :items="formEducation"
-              ></v-combobox>
-              <v-combobox
-                  class="search_input"
-                  style="max-width: max-content"
-                  chips
-                  clearable multiple
-                  label="егэ"
-                  :items="['Русский', 'Математика', 'Физика']"
-              ></v-combobox>
-              <div class="price">
-                <span class="price_for_text">Стоимость</span>
-                <v-range-slider
-                    v-model="value"
-                    :max="800000"
-                    :min="0"
-                    step="10000"
-                    thumb-label="always"
-                ></v-range-slider>
-              </div>
-              <v-combobox
-                  class="search_input"
-                  chips
-                  clearable multiple
-                  label="бюджетные места"
-                  :items="['Русский', 'Математика', 'Физика']"
-              ></v-combobox>
-            </div>
-
-            <div class="container_for_filtres">
-              <v-combobox class="search_input"
-                          clearable
-                          multiple
-                          chips
-                          label="язык"
-                          :items="itemsLevelEducation"
-              ></v-combobox>
-              <v-combobox
-                  class="search_input"
-                  clearable
-                  multiple
-                  chips
-                  label="общежитие"
-                  :items="itemsLevelEducation"
+                  :single-line='true'
+                  label="тип организации"
+                  :items="[... new Set(itemsTypes)]"
+                  :return-object="true"
+                  v-model="dataFromInputs.type"
+                  @input.native = "dataFromInputs.type = $event.srcElement.value"
               ></v-combobox>
               <v-combobox
                   class="search_input"
@@ -120,7 +90,7 @@ const value = ref([0, 800000])
                   chips
                   clearable multiple
                   label="оксо"
-                  :items="['Русский', 'Математика', 'Физика']"
+                  :items="[]"
               ></v-combobox>
               <v-combobox
                   class="search_input"
@@ -128,15 +98,15 @@ const value = ref([0, 800000])
                   chips
                   clearable multiple
                   label="вак"
-                  :items="['Русский', 'Математика', 'Физика']"
+                  :items="[]"
               ></v-combobox>
-              <button class="filtres font_edit">
+              <button class="filtres font_edit" @click="sendDataFromInputs">
                 <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M0 0H14L8.6336 6.93628V14.7075L5.81623 16L5.63472 6.93628L0 0Z" fill="#071937"/>
                 </svg>
                 фильтровать
               </button>
-              <button class="filtres">
+              <button class="filtres" @click="resetFilters">
                 <svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                       d="M7.5 15.295C11.6421 15.295 15 11.9372 15 7.79504C15 3.65291 11.6421 0.295044 7.5 0.295044C3.35786 0.295044 0 3.65291 0 7.79504C0 11.9372 3.35786 15.295 7.5 15.295Z"
@@ -159,7 +129,14 @@ const value = ref([0, 800000])
 
 <style scoped>
 .search_input {
-  max-width: 500px;
+  min-width: 150px;
+  border-top: 1px solid #D6D6EB;
+  border-left: 1px solid #D6D6EB;
+  border-right: 1px solid #D6D6EB;
+}
+
+.search_input_main {
+  max-width: 100%;
   border-top: 1px solid #D6D6EB;
   border-left: 1px solid #D6D6EB;
   border-right: 1px solid #D6D6EB;
@@ -167,7 +144,7 @@ const value = ref([0, 800000])
 
 .container_for_main_filtres {
   display: flex;
-  margin: 0  auto;
+  margin: 0 auto;
   justify-content: center;
   max-width: 75%
 }
@@ -188,17 +165,10 @@ const value = ref([0, 800000])
 
 .container_for_other_filtres {
   max-width: 75%;
-  margin: 0  auto;
+  margin: 0 auto;
 }
 
-.price {
-  border: 1px solid #D6D6EB;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 0 15px;
-  width: 35%;
-}
+
 
 .filtres {
   border: 1px solid #D6D6EB;
@@ -218,6 +188,23 @@ const value = ref([0, 800000])
 
 .filtres:hover {
   background: #D6D6EB;
+}
+
+@media screen and (max-width: 1100px) {
+  .container_for_filtres {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .search_input {
+    max-width: 100% !important;
+    width: 100%;
+  }
+  .filtres {
+    padding: 15px;
+    max-width: 100%;
+  }
 }
 
 </style>

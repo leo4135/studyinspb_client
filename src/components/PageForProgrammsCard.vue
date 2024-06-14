@@ -1,24 +1,45 @@
 <script setup lang="ts">
 
-import {useCounterStore} from '../main.ts'
+import {ref} from "vue";
 
-window.scrollTo({
-  top: 0,
-  behavior: 'smooth'
-});
+
+
 
 // в качестве пропса принимаем id из урла, помогает роутер
 const props = defineProps<{
-  id: String
+  id: string
 }>()
-
-const store = useCounterStore()
 
 
 // находим в сторе нужный нам экземпляр программы
-let currentCard = store.dataEducationPrograms.arr.find(item => {
-  return item.id == props.id
-})
+let currentCard = ref([])
+let currentOrganization = ref([])
+
+async function getData() {
+  await fetch('http://89.23.116.186/api/education_programs')
+      .then(res => res.json())
+      .then(data => {
+        currentCard.value = data.find(item => {
+          return item.id == props.id;
+        })
+      })
+}
+getData();
+
+async function getDataOrganizations() {
+  await fetch('http://89.23.116.186/api/organizations')
+      .then(res => res.json())
+      .then(data => {
+        currentOrganization.value = data.find(item => {
+          return currentCard.id_organization == data.id
+        })
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      })
+}
+getDataOrganizations();
 
 
 </script>
@@ -30,8 +51,9 @@ let currentCard = store.dataEducationPrograms.arr.find(item => {
         <div class="logo_img"></div>
         <div class="container_for_info">
           <h1>{{ currentCard.title }}</h1>
-          <h2>{{ currentCard.organization.shortTitle.toUpperCase() }}</h2>
-          <div class="actual" v-if="currentCard.updatedAt">актуальная информация об образовательной<br/> программе приведена на
+          <h2>{{ currentOrganization.fullTitle }}</h2>
+          <div class="actual" v-if="currentCard.updatedAt">актуальная информация об образовательной<br/> программе
+            приведена на
             сайте организации
           </div>
 
@@ -45,7 +67,7 @@ let currentCard = store.dataEducationPrograms.arr.find(item => {
                     d="M22.1813 8.56268L18.8378 8.07339L17.3292 5.0153C17.1661 4.6891 16.7991 4.44446 16.4321 4.44446C16.0651 4.44446 15.6982 4.64833 15.5351 5.0153L14.0264 8.07339L10.6829 8.56268C10.3159 8.60346 9.98975 8.88888 9.86742 9.25585C9.7451 9.62282 9.82665 10.0306 10.1121 10.2752L12.5585 12.6401L11.9877 15.9836C11.9061 16.3506 12.0692 16.7176 12.3954 16.9622C12.5585 17.0845 12.7624 17.1661 13.0071 17.1661C13.1702 17.1661 13.3333 17.1253 13.4556 17.0438L16.5544 15.4943L19.4902 17.0438C19.8164 17.2069 20.2241 17.2069 20.5503 16.9622C20.8765 16.7176 20.9989 16.3506 20.9581 15.9836L20.3872 12.6401L22.8337 10.2752C23.1191 9.98979 23.2007 9.62282 23.0784 9.25585C22.8745 8.88888 22.5891 8.60346 22.1813 8.56268ZM19.2456 11.9877C19.0825 12.1101 19.0417 12.3139 19.0825 12.5178L19.6533 15.739L16.8399 14.2711C16.6768 14.1896 16.4729 14.1896 16.269 14.2711L13.2517 15.7798L13.8225 12.5178C13.8633 12.3139 13.7818 12.1101 13.6595 11.9877L11.3353 9.70437L14.5565 9.21507C14.7604 9.1743 14.9235 9.05197 15.005 8.88888L16.4321 5.95311L17.8592 8.88888C17.9408 9.05197 18.1039 9.21507 18.3077 9.21507L21.5289 9.70437L19.2456 11.9877Z"
                     fill="#071937"/>
               </svg>
-              <span class="lvl_edu"> {{ currentCard.educationLevel.title }}</span>
+              <span class="lvl_edu"> {{ currentCard.qualification }}</span>
             </div>
             <div class="container_for_text_and_logo">
               <svg width="28" height="37" viewBox="0 0 28 37" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -56,7 +78,7 @@ let currentCard = store.dataEducationPrograms.arr.find(item => {
                     d="M14 22.0875C6.28814 22.0875 0 28.3757 0 36.0875C0 36.4039 0.276836 36.6807 0.59322 36.6807H27.4068C27.7232 36.6807 28 36.4039 28 36.0875C28 28.3757 21.7119 22.0875 14 22.0875ZM1.22599 35.4943C1.54237 28.692 7.15819 23.274 14.0395 23.274C20.9209 23.274 26.4972 28.7316 26.8136 35.4943H1.22599Z"
                     fill="#071937"/>
               </svg>
-              <span class="form_edu"> {{ currentCard.educationForm.name }}</span>
+              <span class="form_edu"> {{ currentCard.form_education }}</span>
             </div>
 
             <div class="container_for_text_and_logo">
@@ -83,11 +105,13 @@ let currentCard = store.dataEducationPrograms.arr.find(item => {
                     d="M28.3795 13.2307L24.9971 17.3996L23.5861 16.0527C23.3214 15.7999 22.9021 15.8096 22.6489 16.0743C22.3961 16.3395 22.4058 16.7588 22.6705 17.0116L24.6012 18.8548C24.7249 18.9728 24.8889 19.0382 25.059 19.0382C25.0731 19.0382 25.0868 19.0377 25.101 19.0368C25.2857 19.0253 25.4572 18.9365 25.5738 18.7929L29.4091 14.0663C29.6398 13.7822 29.596 13.3646 29.3119 13.1339C29.0277 12.9028 28.6101 12.9465 28.3795 13.2307Z"
                     fill="#071937"/>
               </svg>
-              <span class="range_edu"> {{ currentCard.scopeYears == 0 ? currentCard.scopeMonths + ' месяца' :  currentCard.scopeYears + 'года'}}</span>
+              <span
+                  class="range_edu"> {{ currentCard.range_years + 'года' }}</span>
             </div>
 
             <div class="container_for_text_and_logo">
-              <svg width="39" height="38" viewBox="0 0 39 38" fill="none" xmlns="http://www.w3.org/2000/svg" v-if="currentCard.lang_edu">
+              <svg width="39" height="38" viewBox="0 0 39 38" fill="none" xmlns="http://www.w3.org/2000/svg"
+                   v-if="currentCard.language">
                 <path
                     d="M37.7574 22.9503L34.5605 20.7903V14.3102L37.7574 12.1934C37.9302 12.0638 38.0598 11.891 38.0598 11.675C38.0598 11.459 37.9302 11.243 37.7574 11.1566L21.2979 0.0972015C21.0819 -0.0324005 20.7795 -0.0324005 20.5635 0.0972015L0.259204 13.6622C0.172803 13.7054 0.129602 13.7486 0.0864012 13.835C0.0864012 13.835 0.0864012 13.835 0.0864012 13.8782C-8.36862e-08 14.0078 0 14.0942 0 14.2238V26.104C0 26.32 0.129602 26.536 0.302405 26.6224L16.7619 37.5954C16.8915 37.6818 16.9779 37.725 17.1075 37.725C17.2371 37.725 17.3667 37.6818 17.4531 37.5954L37.8006 24.0304C37.9734 23.9008 38.103 23.728 38.103 23.512C38.0598 23.2528 37.9302 23.0368 37.7574 22.9503ZM20.9523 1.43642L36.2454 11.6318L33.7397 13.2734C33.6101 13.3166 33.4805 13.403 33.3941 13.4894L17.0643 24.376L4.79527 16.211C4.75207 16.1678 4.70887 16.1678 4.70887 16.1246L1.77123 14.1806L20.9523 1.43642ZM5.01128 17.9391L16.6755 25.7152C16.8915 25.8448 17.1939 25.8448 17.4099 25.7152L33.2645 15.131V20.4447L17.1507 31.0721L5.01128 23.296V17.9391ZM17.0643 36.2562L1.25282 25.7152V15.4334L3.75846 17.0751V23.6416C3.75846 23.8576 3.88806 24.0736 4.06086 24.2032L16.8483 32.4113C16.9347 32.4977 17.0643 32.4977 17.1939 32.4977C17.3235 32.4977 17.4531 32.4545 17.5395 32.4113L33.6965 21.7839L36.2454 23.512L17.0643 36.2562Z"
                     fill="#071937"/>
@@ -96,27 +120,31 @@ let currentCard = store.dataEducationPrograms.arr.find(item => {
                     fill="#071937"/>
               </svg>
 
-              <span class="lang_edu"> {{ currentCard.lang_edu }}</span>
+              <span class="lang_edu"> {{ currentCard.language }}</span>
             </div>
           </div>
 
           <div class="container_for_attr_cards">
             <div class="mesta">
-              <p>количество мест: бюджет: <span class="budget">{{ currentCard.numberBudgetPlaces == null ? 0 :  currentCard.numberBudgetPlaces }}</span></p>
-              <p>контракт: <span class="contr">{{ currentCard.numberContractPlaces == null ? 0 :  currentCard.numberContractPlaces }}</span></p>
+              <p>количество мест: бюджет: <span class="budget">{{
+                  currentCard.numberBudgetPlaces == null ? 0 : currentCard.budget
+                }}</span></p>
+              <p>контракт: <span class="contr">{{
+                  currentCard.numberContractPlaces == null ? 0 : currentCard.contract
+                }}</span></p>
             </div>
             <div class="price">
-              <p>стоимость обучения в год для граждан РФ: <span class="budget">{{ currentCard.costYear }}</span></p>
-              <p>для иностранных граждан: <span class="budget">{{ currentCard.costYearForeigners }}</span></p>
+              <p>стоимость обучения в год для граждан РФ: <span class="budget">{{ currentCard.cost_rus }}</span></p>
+              <p>для иностранных граждан: <span class="budget">{{ currentCard.cost_all }}</span></p>
             </div>
           </div>
 
-          <p>проходной балл ЕГЭ: <span class="budget">{{ currentCard.ball_ege }}</span></p>
+          <p>проходной балл ЕГЭ: <span class="budget">{{ currentCard.average_budget }}</span></p>
 
-          <span>{{ currentCard.info }}</span>
+          <span>{{ currentCard.description }}</span>
           <div class="container_for_buttons">
-          <a v-if="currentCard.site" :href='currentCard.site'>Сайт программы</a>
-          <a>Новости вуза</a>
+            <a v-if="currentCard.site" :href='currentCard.site'>Сайт программы</a>
+            <a>Новости вуза</a>
           </div>
         </div>
       </div>
@@ -124,19 +152,19 @@ let currentCard = store.dataEducationPrograms.arr.find(item => {
       <div class="container_for_media_and_map">
         <div class="container_for_media">
           <h3>КОНТАКТЫ</h3>
-          <p>Полное наименование: <span> {{ currentCard.organization.fullTitle }} </span></p>
-          <p>Ректор: <span> {{ currentCard.rector }} </span></p>
-          <p>Сайт: <span> {{ currentCard.rector }} </span></p>
+          <p>Полное наименование: <span> {{ currentOrganization.fullTitle }} </span></p>
+          <p>Ректор: <span> {{ currentOrganization.supervisorFio }} </span></p>
+          <p>Сайт: <span> {{ currentOrganization.site }} </span></p>
           <p>Электронная почта: <span> {{ currentCard.email }} </span></p>
-          <p>Телефон: <span> {{ currentCard.email }} </span></p>
-          <p>Приемная комиссия: <span> {{ currentCard.phone }} </span></p>
-          <p>Адрес: <span> {{ currentCard.organization.address }} </span></p>
-          <p>Ближайшее метро: <span> none </span></p>
-          <p>Общежитие: <span> none </span></p>
-          <a>подробнее о вузе</a>
+          <p>Телефон: <span> {{ currentOrganization.phone }} </span></p>
+          <p>Приемная комиссия: <span> {{ currentCard.telephone }} </span></p>
+          <p>Адрес: <span> {{ currentOrganization.address }} </span></p>
+          <p>Общежитие: <span> Есть </span></p>
+          <RouterLink class="style_card" :to="{ name: 'organization', params: { id: currentOrganization.id } }"><span>Подробнее</span></RouterLink>
         </div>
         <div class="container_for_map">
-          <iframe :src="'https://yandex.ru/map-widget/v1/?mode=search&text=' + currentCard.organization.address" width="100%"
+          <iframe :src="'https://yandex.ru/map-widget/v1/?mode=search&text=' + currentOrganization.address"
+                  width="100%"
                   height="600" frameborder="1" style="position:relative;"></iframe>
         </div>
       </div>
@@ -160,7 +188,8 @@ h3 {
   font-weight: 700;
   font-size: 16px;
 }
-a {
+
+.style_card {
   color: #4CC6C6;
   text-decoration: underline #4CC6C6;
 }
@@ -193,7 +222,7 @@ a:hover {
 .logo_img {
   width: 300px;
   height: 345px;
-  background-image: url("../../public/logo_spbgu.png");
+  background-image: url("@/public/alferov.jpg");
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;

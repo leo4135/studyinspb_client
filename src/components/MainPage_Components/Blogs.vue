@@ -1,116 +1,61 @@
 <script setup lang="ts">
+import {Swiper, SwiperSlide} from 'swiper/vue';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+import {Navigation} from 'swiper/modules';
+import {computed, ref} from "vue";
 
+const modules = [Navigation];
+let curWindowWidth = ref(window.innerWidth);
 </script>
 
 <template>
 
   <section class="blogs">
-    <div class="wrapper">
+    <div class="wrapper width">
       <div class="container">
 
         <h1>Блоги: студенты и вузы</h1>
         <div class="container_for_cards">
+          <swiper
+              :slidesPerView="curWindowWidth > 1000 ? 3 : curWindowWidth > 800 ? 2 : 1"
+              :spaceBetween="40"
+              :modules="modules"
+              class="mySwiper"
+              :navigation="true"
+          >
 
-          <div class="blog">
-            <div class="main_container">
-              <div class="container_for_text">
-                <h2>Национальный исследовательский университет ИТМО</h2>
-                <p>выпускники ИТМО</p>
-              </div>
-              <svg width="64" height="72" viewBox="0 0 64 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g filter="url(#filter0_b_4045_1625)">
-                  <g clip-path="url(#clip0_4045_1625)">
-                    <path
-                        d="M30 3.6C15.4 3.6 3.6 15.4 3.6 30C3.6 44.6 15.4 56.4 30 56.4C44.6 56.4 56.4 44.6 56.4 30C56.4 15.4 44.6 3.6 30 3.6ZM0 30C0 13.4 13.4 0 30 0C46.6 0 60 13.4 60 30C60 46.6 46.6 60 30 60C13.4 60 0 46.6 0 30Z"
-                        fill="white"/>
-                    <path
-                        d="M23 19.2C23.6 18.8 24.2 18.8 24.8 19.2L41.6 28.8C42.2 29.2 42.6 29.8 42.6 30.4C42.6 31 42.2 31.6 41.6 32L24.8 41.6C24.2 42 23.6 42 23 41.6C22.4 41.2 22 40.6 22 40V20.8C22 20.2 22.4 19.6 23 19.2ZM25.8 24V36.8L37.2 30.4L25.8 24Z"
-                        fill="white"/>
-                  </g>
-                </g>
-                <defs>
-                  <filter id="filter0_b_4045_1625" x="-5" y="-5" width="73.2227" height="81.3407"
-                          filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                    <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-                    <feGaussianBlur in="BackgroundImageFix" stdDeviation="2.5"/>
-                    <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_4045_1625"/>
-                    <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_4045_1625" result="shape"/>
-                  </filter>
-                  <clipPath id="clip0_4045_1625">
-                    <rect width="60" height="60" fill="white"/>
-                  </clipPath>
-                </defs>
-              </svg>
-            </div>
-          </div>
+            <swiper-slide>
 
-          <div class="blog">
-            <div class="main_container">
-              <div class="container_for_text">
-                <h2>Национальный исследовательский университет ИТМО</h2>
-                <p>выпускники ИТМО</p>
-              </div>
-              <svg width="64" height="72" viewBox="0 0 64 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g filter="url(#filter0_b_4045_1625)">
-                  <g clip-path="url(#clip0_4045_1625)">
-                    <path
-                        d="M30 3.6C15.4 3.6 3.6 15.4 3.6 30C3.6 44.6 15.4 56.4 30 56.4C44.6 56.4 56.4 44.6 56.4 30C56.4 15.4 44.6 3.6 30 3.6ZM0 30C0 13.4 13.4 0 30 0C46.6 0 60 13.4 60 30C60 46.6 46.6 60 30 60C13.4 60 0 46.6 0 30Z"
-                        fill="white"/>
-                    <path
-                        d="M23 19.2C23.6 18.8 24.2 18.8 24.8 19.2L41.6 28.8C42.2 29.2 42.6 29.8 42.6 30.4C42.6 31 42.2 31.6 41.6 32L24.8 41.6C24.2 42 23.6 42 23 41.6C22.4 41.2 22 40.6 22 40V20.8C22 20.2 22.4 19.6 23 19.2ZM25.8 24V36.8L37.2 30.4L25.8 24Z"
-                        fill="white"/>
-                  </g>
-                </g>
-                <defs>
-                  <filter id="filter0_b_4045_1625" x="-5" y="-5" width="73.2227" height="81.3407"
-                          filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                    <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-                    <feGaussianBlur in="BackgroundImageFix" stdDeviation="2.5"/>
-                    <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_4045_1625"/>
-                    <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_4045_1625" result="shape"/>
-                  </filter>
-                  <clipPath id="clip0_4045_1625">
-                    <rect width="60" height="60" fill="white"/>
-                  </clipPath>
-                </defs>
-              </svg>
-            </div>
-          </div>
+                <iframe width="100%" height="545" src="https://www.youtube.com/embed/E_ABlKcziS8?si=gPtQ3k-1zWTjUFI2"
+                        title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-          <div class="blog">
-            <div class="main_container">
-              <div class="container_for_text">
-                <h2>Национальный исследовательский университет ИТМО</h2>
-                <p>выпускники ИТМО</p>
-              </div>
-              <svg width="64" height="72" viewBox="0 0 64 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g filter="url(#filter0_b_4045_1625)">
-                  <g clip-path="url(#clip0_4045_1625)">
-                    <path
-                        d="M30 3.6C15.4 3.6 3.6 15.4 3.6 30C3.6 44.6 15.4 56.4 30 56.4C44.6 56.4 56.4 44.6 56.4 30C56.4 15.4 44.6 3.6 30 3.6ZM0 30C0 13.4 13.4 0 30 0C46.6 0 60 13.4 60 30C60 46.6 46.6 60 30 60C13.4 60 0 46.6 0 30Z"
-                        fill="white"/>
-                    <path
-                        d="M23 19.2C23.6 18.8 24.2 18.8 24.8 19.2L41.6 28.8C42.2 29.2 42.6 29.8 42.6 30.4C42.6 31 42.2 31.6 41.6 32L24.8 41.6C24.2 42 23.6 42 23 41.6C22.4 41.2 22 40.6 22 40V20.8C22 20.2 22.4 19.6 23 19.2ZM25.8 24V36.8L37.2 30.4L25.8 24Z"
-                        fill="white"/>
-                  </g>
-                </g>
-                <defs>
-                  <filter id="filter0_b_4045_1625" x="-5" y="-5" width="73.2227" height="81.3407"
-                          filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                    <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-                    <feGaussianBlur in="BackgroundImageFix" stdDeviation="2.5"/>
-                    <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_4045_1625"/>
-                    <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_4045_1625" result="shape"/>
-                  </filter>
-                  <clipPath id="clip0_4045_1625">
-                    <rect width="60" height="60" fill="white"/>
-                  </clipPath>
-                </defs>
-              </svg>
-            </div>
-          </div>
+            </swiper-slide>
+
+            <swiper-slide>
+
+                <iframe width="100%" height="545" src="https://www.youtube.com/embed/yUvMswQ-58o?si=0mHVImI7dMy4Es64"
+                        title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+            </swiper-slide>
+
+            <swiper-slide>
+
+                <iframe width="100%" height="545" src="https://www.youtube.com/embed/a9JPq9b4bZI?si=2-uVQI6uJ7IyI9ya"
+                        title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+            </swiper-slide>
+
+          </swiper>
+
         </div>
-
       </div>
     </div>
   </section>
@@ -119,36 +64,31 @@
 
 <style scoped>
 
+.width {
+  width: 85%;
+}
+
 .blogs {
   background: #FD7436;
   color: #FFFFFF;
 }
 
 .container {
-  height: 100vh;
+  padding: 30px 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: space-around;
 }
 
 h1 {
   font-size: 40px;
+  margin: 20px 0;
 }
 
 .blog {
-  width: 33%;
-  background-image: linear-gradient(to top, rgba(7, 25, 55, .75), rgba(7, 25, 55, 0)), url('../../../public/News/News.png');
-  background-size: cover;
-  background-position: center;
-  padding: 25px;
-  display: flex;
-  align-items: end;
+  width: 100%;
 }
 
-.main_container {
-  display: flex;
-  justify-content: space-between;
-}
 
 h2 {
   font-size: 16px;
@@ -159,12 +99,8 @@ p {
   font-size: 14px;
 }
 
-.container_for_text {
-  max-width: 50%;
-}
 
 .container_for_cards {
-  height: 70%;
   display: flex;
   gap: 25px;
 }
