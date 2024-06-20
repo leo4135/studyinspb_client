@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineEmits, reactive } from 'vue'
+import {defineEmits, reactive, watch} from 'vue'
 import { ref } from "vue";
 import { useCounterStore } from '../../main.ts'
 import { storeToRefs } from "pinia";
@@ -32,8 +32,6 @@ store.$subscribe(() => {
   store.dataOrganizations.forEach(item => {
     // при переходе между вкладками, необходимо обнулить массив с организацями, чтобы снова проитерироваться
     // по ним и запушить в массив только те, что подходят по типу
-    itemsOrganizations.value = [];
-    itemsTypes.value = [];
     if (item.type == educationTabs.value) {
       itemsOrganizations.value.push(item.shortTitle);
       itemsTypes.value.push(item.type);
@@ -41,6 +39,10 @@ store.$subscribe(() => {
   });
 })
 
+watch(educationTabs, () => {
+  itemsOrganizations.value = [];
+  itemsTypes.value = [];
+})
 
 const resetFilters = () => {
   delete dataFromInputs.title
@@ -60,7 +62,6 @@ const resetFilters = () => {
                   label="наименование организации"
                   :items="[...new Set(itemsOrganizations)]"
                   :single-line='true'
-                  :return-object="true"
                   v-model="dataFromInputs.title"
                   @input.native = "dataFromInputs.title = $event.srcElement.value"
       ></v-combobox>
@@ -80,7 +81,6 @@ const resetFilters = () => {
                   :single-line='true'
                   label="тип организации"
                   :items="[... new Set(itemsTypes)]"
-                  :return-object="true"
                   v-model="dataFromInputs.type"
                   @input.native = "dataFromInputs.type = $event.srcElement.value"
               ></v-combobox>

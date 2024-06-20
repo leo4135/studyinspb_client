@@ -1,8 +1,6 @@
 <script setup lang="ts">
 
-import {ref} from "vue";
-
-
+import { ref } from "vue";
 
 
 // в качестве пропса принимаем id из урла, помогает роутер
@@ -10,36 +8,38 @@ const props = defineProps<{
   id: string
 }>()
 
+const currentCard = ref("");
+const currentOrganization = ref([]);
+let imageUrl = ref('');
 
-// находим в сторе нужный нам экземпляр программы
-let currentCard = ref([])
-let currentOrganization = ref([])
+
 
 async function getData() {
-  await fetch('http://89.23.116.186/api/education_programs')
+  await fetch('http://studyinspb.ru/api/education_programs/')
       .then(res => res.json())
       .then(data => {
-        currentCard.value = data.find(item => {
-          return item.id == props.id;
-        })
+        currentCard.value = data.find(item => item.id == props.id);
+        getDataOrganization();
       })
 }
 getData();
 
-async function getDataOrganizations() {
-  await fetch('http://89.23.116.186/api/organizations')
+async function getDataOrganization() {
+  await fetch('http://studyinspb.ru/api/organizations/')
       .then(res => res.json())
       .then(data => {
-        currentOrganization.value = data.find(item => {
-          return currentCard.id_organization == data.id
-        })
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        });
+        currentOrganization.value = data.find(item => item.id == currentCard.value.id_organization);
+        imageUrl.value = new URL(`/public/${currentOrganization.value.logo}`, import.meta.url)
       })
 }
-getDataOrganizations();
+
+
+setTimeout(() => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  })
+}, 100)
 
 
 </script>
@@ -48,7 +48,7 @@ getDataOrganizations();
   <div class="container_for_custom_color">
     <div class="wrapper">
       <div class="container_for_logo_and_main_info">
-        <div class="logo_img"></div>
+        <div class="logo_img" :style="{ backgroundImage: `url(${imageUrl})` }"></div>
         <div class="container_for_info">
           <h1>{{ currentCard.title }}</h1>
           <h2>{{ currentOrganization.fullTitle }}</h2>
@@ -222,7 +222,6 @@ a:hover {
 .logo_img {
   width: 300px;
   height: 345px;
-  background-image: url("@/public/alferov.jpg");
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;

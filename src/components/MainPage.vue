@@ -15,7 +15,6 @@ import Blogs from "./MainPage_Components/Blogs.vue";
             И КОЛЛЕДЖАХ В САНКТ-ПЕТЕРБУРГЕ" typePage="main" />
   <TextComponentAfterBanner/>
   <Slider/>
-  <News/>
   <Blogs/>
 </template>
 

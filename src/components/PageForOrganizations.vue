@@ -7,55 +7,24 @@ import {storeToRefs} from "pinia";
 import FiltresOrganization from "./PageForOrganizations_Components/FiltresOrganization.vue";
 
 const store = useCounterStore()
-const { educationTabs, dataOrganizations } = storeToRefs(store);
+const {educationTabs, dataOrganizations} = storeToRefs(store);
 
 
-
-let getAllOrganizations = ref<any>([]);
-let currentPage = ref(1);
 const currList = ref([]);
-let countPages = ref(1);
-let preloaderState = ref(false);
-
+let state = ref(true)
 
 async function getData() {
-  await fetch('http://89.23.116.186/api/organizations')
+  await fetch('http://studyinspb.ru/api/organizations/?page=1')
       .then(res => res.json())
       .then(data => {
-        getAllOrganizations.value = data;
-        dataOrganizations.value = data;
-            currList.value = [...getAllOrganizations.value].filter((item, index) => (index >= (currentPage.value - 1) * 10) && index < (currentPage.value * 10));
-        countPages.value = Math.ceil(data.length / 10);
+        currList.value = data.filter(item => !Object.hasOwn(item , "count") )
         setTimeout(() => {
-          preloaderState.value = true;
-        }, 1500)
+          state.value = false;
+        }, 1000)
       })
 }
 
-  getData();
-
-
-
-watch([currentPage, educationTabs], (prev, next) => {
-  prev[1] == next[1] ? false : currentPage.value = 1;
-
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-    console.log(educationTabs);
-    currList.value = [...store.dataOrganizations].filter((item, index) => (index >= (currentPage.value - 1) * 10) && index < (currentPage.value * 10) && item.type.includes(educationTabs.value));
-    console.log(store.dataOrganizations);
-
-}, { deep: true })
-
-
-// получаем пропс из эмита дочернего класса, проверяем свойства переданного объекта и заново получаем массив с данными с учетом фильтров
-const mountDataFromInputs = (val) => {
-  currList.value = [...store.dataOrganizations].filter((item, index) => (index >= (currentPage.value - 1) * 10) && index < (currentPage.value * 10) && (Object.hasOwn(val, 'type') ? item.type.includes(val?.type) : true) && (Object.hasOwn(val, 'title') ? item.fullTitle.includes(val?.title) : true));
-}
-
-const resetFromFilters = () => currList.value = [...store.dataOrganizations].filter((item, index) => (index >= (currentPage.value - 1) * 10) && index < (currentPage.value * 10) && item.type.includes(educationTabs.value));
+getData();
 
 
 </script>
@@ -66,19 +35,16 @@ const resetFromFilters = () => currList.value = [...store.dataOrganizations].fil
   <Banner h1="Организации" p="В Санкт-Петербурге находятся 44 государственные организации высшего образования, а также  профессиональные образовательные организации
 и научные организации, реализующие
 образовательные программы" typePage="organization"/>
-  <FiltresOrganization @sendDataFromInputs="mountDataFromInputs" @resetAllFilters="resetFromFilters" />
-  <div v-if="!preloaderState" class="preloader">
-    <v-progress-circular indeterminate></v-progress-circular>
+
+  <FiltresOrganization @sendDataFromInputs="mountDataFromInputs" @resetAllFilters="resetFromFilters"/>
+  <div class="preloader" v-if="state">
+    <v-progress-circular
+        color="primary"
+        indeterminate
+    ></v-progress-circular>
+
   </div>
   <CardOrganization v-else v-for="card in currList" :card="card"></CardOrganization>
-  <v-pagination
-      v-model="currentPage"
-      :length="countPages"
-      rounded="circle"
-      :total-visible="5"
-      @click="currentPage.value++"
-  ></v-pagination>
-
 
 </template>
 
@@ -89,6 +55,15 @@ const resetFromFilters = () => currList.value = [...store.dataOrganizations].fil
   display: flex;
   justify-content: center;
   margin: 20px;
+}
+
+
+.pagination {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  align-items: center;
 }
 
 </style>

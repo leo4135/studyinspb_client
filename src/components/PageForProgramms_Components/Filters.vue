@@ -9,6 +9,7 @@ import { storeToRefs } from "pinia";
 
 // массив для хранения типа организаций
 const itemsEducations = ref([]);
+const itemsOrganizations = ref([]);
 const itemsTypes = ref([]);
 let value = ref([0 , 300000]);
 
@@ -29,23 +30,14 @@ const store = useCounterStore();
 const { educationTabs } = storeToRefs(store);
 educationTabs.value = "Основное";
 
-// подписываемся на обновления стора
-store.$subscribe(() => {
-  store.dataEducationPrograms.forEach(item => {
-    // при переходе между вкладками, необходимо обнулить массив с организацями, чтобы снова проитерироваться
-    // по ним и запушить в массив только те, что подходят по типу
 
-    if (item.type == educationTabs.value) {
-      itemsEducations.value.push(item.title);
-      itemsTypes.value.push(item.type);
-    }
-  });
-})
-
-watch(educationTabs, () => {
+watch([educationTabs, itemsEducations], () => {
   itemsEducations.value = [];
   itemsTypes.value = [];
+  itemsOrganizations.value = [];
+  console.log(itemsEducations);
 })
+
 
 
 const resetFilters = () => {
@@ -74,7 +66,8 @@ const resetFilters = () => {
                   multiple
                   chips
                   label="наименование организации"
-                  :items="itemsOrganizations"
+                  :items="[...new Set(itemsOrganizations)]"
+                  @input.native = "dataFromInputs.shortTitle = $event.srcElement.value"
       ></v-combobox>
       <button class="search" @click="sendDataFromInputs">Найти</button>
     </div>
@@ -251,6 +244,36 @@ const resetFilters = () => {
 @media screen and (max-width: 1100px) {
   .container_for_filtres {
     flex-direction: column;
+    margin-bottom: 20px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .container_for_main_filtres {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  .search_input {
+    width: 100%;
+    max-width: 100% !important;
+  }
+  .search {
+    margin-left: 0;
+  }
+
+  .container_for_filtres {
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+  .price {
+    gap: 20px;
+    flex-direction: column;
+    width: 100%;
+  }
+  .filtres {
+    width: 60%;
   }
 }
 

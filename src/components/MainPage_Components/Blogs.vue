@@ -27,29 +27,31 @@ let curWindowWidth = ref(window.innerWidth);
           >
 
             <swiper-slide>
-
-                <iframe width="100%" height="545" src="https://www.youtube.com/embed/E_ABlKcziS8?si=gPtQ3k-1zWTjUFI2"
-                        title="YouTube video player" frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
-            </swiper-slide>
-
-            <swiper-slide>
-
-                <iframe width="100%" height="545" src="https://www.youtube.com/embed/yUvMswQ-58o?si=0mHVImI7dMy4Es64"
-                        title="YouTube video player" frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              <iframe width="100%" height="315"
+                      src="https://www.youtube.com/embed/E_ABlKcziS8?si=88qFeF3FKuPnnYr8&amp;controls=0"
+                      title="YouTube video player" frameborder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
             </swiper-slide>
 
             <swiper-slide>
 
-                <iframe width="100%" height="545" src="https://www.youtube.com/embed/a9JPq9b4bZI?si=2-uVQI6uJ7IyI9ya"
-                        title="YouTube video player" frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              <iframe width="100%" height="315"
+                      src="https://www.youtube.com/embed/yUvMswQ-58o?si=kRNXZISpz8HZS33m&amp;controls=0"
+                      title="YouTube video player" frameborder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+            </swiper-slide>
+
+            <swiper-slide>
+
+              <iframe width="100%" height="315"
+                      src="https://www.youtube.com/embed/a9JPq9b4bZI?si=ML1blV-GE5pbwcPs&amp;controls=0"
+                      title="YouTube video player" frameborder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
             </swiper-slide>
 
@@ -71,6 +73,8 @@ let curWindowWidth = ref(window.innerWidth);
 .blogs {
   background: #FD7436;
   color: #FFFFFF;
+  margin-top: 50px;
+  padding-bottom: 25px;
 }
 
 .container {
@@ -103,5 +107,6 @@ p {
 .container_for_cards {
   display: flex;
   gap: 25px;
+  height: 315px;
 }
 </style>

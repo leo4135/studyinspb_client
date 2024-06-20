@@ -11,7 +11,7 @@ if (winWidth.value > 975) {
     const coordNav = document.querySelector('nav')
 
 
-    if (currentUrl.includes('/organizations' || 'organization')) {
+    if (currentUrl.includes('/organizations') || currentUrl.includes('/organization')) {
       getFirstPositionForHeaderMenuEffect(dynamicItem, allNav[1]);
     } else if (currentUrl == '/') {
       getFirstPositionForHeaderMenuEffect(dynamicItem, allNav[0]);

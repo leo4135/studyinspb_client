@@ -425,6 +425,45 @@ p {
   box-shadow: 5px 5px 5px #000;
 }
 
+@media screen and (max-width: 1259px) {
+  .container_for_types_organization {
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+    margin-top: 10px;
+  }
+  .container_for_types_organization button:nth-child(1)  {
+    font-size: 12px;
+  }
+  .container_for_types_organization button:nth-child(2)  {
+    font-size: 12px;
+  }
+  .container_for_types_organization button:nth-child(3)  {
+    font-size: 12px;
+  }
+
+  .container_for_types_education {
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  .container_for_types_education button:nth-child(1)  {
+    font-size: 12px;
+    width: 75px;
+  }
+  .container_for_types_education button:nth-child(2)  {
+    font-size: 12px;
+    width: 75px;
+  }
+  .container_for_types_education button:nth-child(3)  {
+    font-size: 12px;
+    width: 75px;
+  }
+
+}
+
 @media screen and (max-width: 900px) {
   .main_container {
     flex-direction: column;
