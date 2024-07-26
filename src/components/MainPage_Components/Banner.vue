@@ -2,7 +2,7 @@
 
 import {useCounterStore} from '../../main.ts'
 import {storeToRefs} from "pinia";
-import {computed, ref, watch} from "vue";
+import {onMounted, ref} from "vue";
 
 
 const store = useCounterStore()
@@ -12,7 +12,8 @@ defineProps<{
   p: string,
   typePage: string
 }>();
-educationTabs.value = 'Бакалавриат';
+
+
 
 function changeColor(event) {
 
@@ -21,6 +22,7 @@ function changeColor(event) {
     item.style.background = 'none';
   })
   event.style.background = '#071937';
+
   switch (event.textContent) {
     case 'ВО':
       educationTabs.value = 'Основное'
@@ -38,7 +40,7 @@ function changeColor(event) {
       educationTabs.value = 'государственные колледжи'
       break;
   }
-  console.log(store.educationTabs)
+
 }
 
 // реактивность для калькулятора
@@ -90,8 +92,8 @@ function getValues() {
           </svg>
         </div>
         <div class="right_menu_banner">
-          <h1 class="main_page" v-if="typePage == 'main'">
-            <span> {{ h1 }} </span>
+          <h1 class="main_page custom_for_mainpage" v-if="typePage == 'main'">
+            <span>  {{ h1 }} </span>
           </h1>
           <h1 class="all_pages" v-else-if="typePage == 'education' || 'organization'">
             <span> {{ h1 }} </span>
@@ -115,7 +117,7 @@ function getValues() {
           <div class="container_for_types_organization" v-if="typePage == 'organization'">
             <button class="btn_from_education" @click="changeColor($event.target)">вузы</button>
             <button class="btn_from_education" @click="changeColor($event.target)">колледжи</button>
-            <button class="btn_from_education" @click="changeColor($event.target)">научные организации</button>
+            <button v-if="false" class="btn_from_education" @click="changeColor($event.target)">научные организации</button>
           </div>
 
 
@@ -226,6 +228,9 @@ p {
   font-size: 18px;
   color: #FFFFFF;
   text-align: center;
+}
+.custom_for_mainpage {
+  margin-bottom: -35px;
 }
 
 .right_menu_banner {
@@ -471,7 +476,9 @@ p {
   .right_menu_banner {
    max-width: 100%;
   }
-
+  .custom_for_mainpage { 
+    margin-bottom: 0;
+  }
   .main_page {
     line-height: 40px;
     font-size: 24px;
@@ -490,7 +497,25 @@ p {
     flex-direction: column;
     align-items: center;
     gap: 5px;
+    padding: 20px 0;
   }
+  
 }
 
+@media screen and (max-width:600px) {
+  .calculator {
+    gap: unset;
+  }
+  .container_for_sub {
+    flex-direction: column;
+    width: 85%;
+    gap: 20px;
+  }
+  .right_menu_banner p {
+    margin-bottom: 20px;
+  }
+  .main_btn_org {
+    margin: 20px;
+  }
+}
 </style>

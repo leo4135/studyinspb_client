@@ -1,10 +1,69 @@
 <script setup lang="ts">
-import {onMounted, ref, watch} from "vue";
-
+import {onActivated, onMounted, onUpdated, ref, watch} from "vue";
+import { useRoute } from 'vue-router';
+const route = useRoute();
+watch(route, () => {
+  setTimeout(() => {
+    document.querySelectorAll('.style_for_items_nav_menu').forEach(item => {
+      item.childNodes[0].style = "color:#000000;"
+    })
+    getCurrentHeaderPos();
+  }, 100)
+})
 
 const winWidth = ref(window.innerWidth);
 if (winWidth.value > 975) {
   onMounted(() => {
+    getCurrentHeaderPos();
+  })
+
+}
+
+
+function getCurrentHeaderPos() {
+  const currentUrl = window.location.pathname;
+  const dynamicItem = document.querySelector('.dynamic_menu_item')
+  const allNav = document.querySelectorAll('.style_for_items_nav_menu')
+  const coordNav = document.querySelector('nav')
+
+
+  if (currentUrl.includes('/organizations') || currentUrl.includes('/organization')) {
+    getFirstPositionForHeaderMenuEffect(dynamicItem, allNav[1]);
+  } else if (currentUrl == '/') {
+    getFirstPositionForHeaderMenuEffect(dynamicItem, allNav[0]);
+  } else if (currentUrl.includes('/programs') || currentUrl.includes('calculator')) {
+    getFirstPositionForHeaderMenuEffect(dynamicItem, allNav[2]);
+  } else if (currentUrl.includes('/news')) {
+    getFirstPositionForHeaderMenuEffect(dynamicItem, allNav[3]);
+  } else if (currentUrl.includes('/contacts')) {
+    getFirstPositionForHeaderMenuEffect(dynamicItem, allNav[4]);
+  }
+
+
+  allNav.forEach(item => {
+    item.onclick = () => {
+      document.querySelector('header').childNodes[0].childNodes[0].childNodes[0].childNodes[1].childNodes.forEach(it => {
+        it.childNodes[0] === undefined ? console.log('undef') : it.childNodes[0].style.color = '#000000'
+      })
+      dynamicItem.style.left = item.getBoundingClientRect().x - coordNav.getBoundingClientRect().x + 'px'
+      dynamicItem.style.height = item.getBoundingClientRect().height + 'px'
+      dynamicItem.style.width = item.getBoundingClientRect().width + 'px'
+      dynamicItem.style.padding = 25 + 'px'
+      item.childNodes[0].style.color = '#FFFFFF';
+    }
+
+  })
+
+  function getFirstPositionForHeaderMenuEffect(dynamicElem, FirstElem) {
+    dynamicElem.style.left = FirstElem.getBoundingClientRect().x - coordNav.getBoundingClientRect().x + 'px'
+    dynamicElem.style.height = FirstElem.getBoundingClientRect().height + 'px'
+    dynamicElem.style.width = FirstElem.getBoundingClientRect().width + 'px'
+    FirstElem.childNodes[0].style.color = '#FFFFFF';
+  }
+}
+
+window.addEventListener('resize', () => {
+
     const currentUrl = window.location.pathname;
     const dynamicItem = document.querySelector('.dynamic_menu_item')
     const allNav = document.querySelectorAll('.style_for_items_nav_menu')
@@ -19,6 +78,8 @@ if (winWidth.value > 975) {
       getFirstPositionForHeaderMenuEffect(dynamicItem, allNav[2]);
     } else if (currentUrl.includes('/news')) {
       getFirstPositionForHeaderMenuEffect(dynamicItem, allNav[3]);
+    } else if (currentUrl.includes('/contacts')) {
+      getFirstPositionForHeaderMenuEffect(dynamicItem, allNav[4]);
     }
 
 
@@ -42,32 +103,10 @@ if (winWidth.value > 975) {
       dynamicElem.style.width = FirstElem.getBoundingClientRect().width + 'px'
       FirstElem.childNodes[0].style.color = '#FFFFFF';
     }
-  })
 
-} else {
-  let items = [
-    {
-      title: 'Foo',
-      value: 'foo',
-    },
-    {
-      title: 'Bar',
-      value: 'bar',
-    },
-    {
-      title: 'Fizz',
-      value: 'fizz',
-    },
-    {
-      title: 'Buzz',
-      value: 'buzz',
-    },
-  ]
-  let drawer = false;
-  watch(drawer, () => {
-    drawer = false;
-  })
-}
+});
+
+
 
 
 let burgerState = ref(false)
@@ -101,7 +140,7 @@ let burgerState = ref(false)
             <RouterLink to="/organizations" class="style_for_items_nav_menu"><span>Организации</span></RouterLink>
             <RouterLink to="/programs" class="style_for_items_nav_menu"><span>Программы</span></RouterLink>
             <a href="/" class="style_for_items_nav_menu"><span>Актуальное</span></a>
-            <a href="/" class="style_for_items_nav_menu"><span>Контакты</span></a>
+            <RouterLink to="/contacts" class="style_for_items_nav_menu"><span>Контакты</span></RouterLink>
           </nav>
         </div>
         <div class="search_and_language">
@@ -164,8 +203,8 @@ let burgerState = ref(false)
           </RouterLink>
           <RouterLink @click="burgerState = !burgerState" to="/organizations" class="style_for_items_nav_menu"><span>Организации</span></RouterLink>
           <RouterLink @click="burgerState = !burgerState" to="/programs" class="style_for_items_nav_menu"><span>Программы</span></RouterLink>
-          <a href="/" class="style_for_items_nav_menu"><span>Актуальное</span></a>
-          <a href="/" class="style_for_items_nav_menu"><span>Контакты</span></a>
+          <a class="style_for_items_nav_menu"><span>Актуальное</span></a>
+          <RouterLink @click="burgerState = !burgerState" to="/contacts" class="style_for_items_nav_menu"><span>Контакты</span></RouterLink>
         </div>
       </div>
 

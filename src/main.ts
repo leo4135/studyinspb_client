@@ -7,6 +7,7 @@ import PageForProgramms from './components/PageForProgramms.vue';
 import PageForOrganizations from "./components/PageForOrganizations.vue";
 import PageForProgrammsCard from "./components/PageForProgrammsCard.vue";
 import PageForOrganizationCard from "./components/PageForOrganizationCard.vue";
+import PageForContacts from "./components/PageForContacts.vue";
 import Calculator from "./components/Calculator.vue";
 import PageForNews from "./components/PageForNews.vue";
 import bagger from "./components/ListFromJob.vue"
@@ -22,6 +23,7 @@ import * as directives from 'vuetify/directives';
 
 
 
+
 const vuetify = createVuetify({
     components,
     directives
@@ -30,8 +32,10 @@ const vuetify = createVuetify({
 
 const routes = [
     {path: '/',component: MainPage},
-    {path: '/organizations',name: 'organizations', component: PageForOrganizations},
+    {path: '/organizations',name: 'organizations', component: PageForOrganizations, props: true},
+    {path: '/organizations/:tab',name: 'organizationsType', component: PageForOrganizations, props: true},
     {path: '/programs', component: PageForProgramms},
+    {path: '/contacts', component: PageForContacts},
     {path: '/programs/:id', name: "programs", component: PageForProgrammsCard, props: true},
     {path: '/organization/:id', name: "organization", component: PageForOrganizationCard, props: true},
     {path: '/news/:id', name: "news", component: PageForNews, props: true},
@@ -52,14 +56,15 @@ createApp(App)
     .use(router)
     .mount('#app')
 
-export const useCounterStore = defineStore('mockData', () => {
+export const useCounterStore = defineStore('Data', () => {
     const dataEducationPrograms = ref([])
     const dataOrganizations = ref([])
-    const educationTabs = ref('ВО')
+    const educationTabs = ref('Основное')
     const filtres = ref([])
     const filtresOrg = ref([])
     const calculatorEGE = ref([])
+    let updatedForHeaderInFooter = ref('some');
 
 
-    return { dataEducationPrograms, educationTabs, filtres, dataOrganizations, filtresOrg, calculatorEGE }
+    return { dataEducationPrograms, educationTabs, filtres, dataOrganizations, filtresOrg, calculatorEGE, updatedForHeaderInFooter }
 })

@@ -142,7 +142,7 @@ setTimeout(() => {
           <p>проходной балл ЕГЭ: <span class="budget">{{ currentCard.average_budget }}</span></p>
 
           <span>{{ currentCard.description }}</span>
-          <div class="container_for_buttons">
+          <div v-if="false" class="container_for_buttons">
             <a v-if="currentCard.site" :href='currentCard.site'>Сайт программы</a>
             <a>Новости вуза</a>
           </div>
@@ -221,7 +221,7 @@ a:hover {
 
 .logo_img {
   width: 300px;
-  height: 345px;
+  height: 250px;
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
@@ -306,6 +306,73 @@ span {
 
 .container_for_media {
   max-width: 50%;
+}
+
+@media screen  and (max-width: 1250px) {
+  .wrapper {
+    max-width: 96%;
+  }
+}
+
+@media screen  and (max-width: 1070px) {
+  .container_for_map {
+width: 45%;
+}
+}
+
+@media screen  and (max-width: 800px) {
+  h1 {
+  font-size: 20px;
+  font-weight: normal;
+}
+
+h2 {
+  font-weight: normal;
+  font-size: 14px;
+}
+
+h3 {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+p {
+  font-size: 14px;
+}
+span {
+  font-size: 14px;
+}
+.container_for_logo_and_main_info {
+  flex-direction: column;
+  align-items: center;
+}
+.container_for_attr_cards {
+  justify-content: center;
+}
+
+.container_for_attr_cards {
+  flex-wrap: wrap;
+}
+}
+@media screen  and (max-width: 700px) {
+  .container_for_info {
+    max-width: 95%;
+    gap: 15px;
+  }
+  .container_for_media_and_map {
+  flex-direction: column;
+  gap: 20px;
+  }
+  .container_for_media {
+    max-width: 95%;
+  }
+  .container_for_map {
+    width: 100%;
+  }
+  .container_for_attr_cards {
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
 }
 
 </style>

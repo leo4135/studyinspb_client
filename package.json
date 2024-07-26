@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "@mdi/font": "^7.4.47",
+    "dotenv": "^16.4.5",
     "pinia": "^2.1.7",
+    "surge": "^0.23.1",
     "swiper": "^11.1.4",
     "vue": "^3.4.21",
     "vue-router": "^4.3.2",

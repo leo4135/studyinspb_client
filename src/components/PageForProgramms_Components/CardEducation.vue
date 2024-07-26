@@ -1,12 +1,14 @@
 <script setup lang="ts">
 
 import { ref } from "vue";
-
-let prop = defineProps<{ card: object }>();
 let imageUrl = ref('');
+let prop = defineProps<{ card: object }>();
+
 
 
 imageUrl.value = new URL(`/public/${prop.card.logo}`, import.meta.url)
+
+
 
 </script>
 
@@ -14,10 +16,10 @@ imageUrl.value = new URL(`/public/${prop.card.logo}`, import.meta.url)
   <div class="wrapper">
     <div class="container_for_cards" style="margin-top: 50px">
       <div class="card">
-        <div class="image_block" :style="{ backgroundImage: `url(${imageUrl})` }"></div>
+        <div class="image_block" :style="{ backgroundImage: `url(${prop.card.logo})` }"></div>
         <div class="text_block">
           <h1>{{ prop.card.title }}</h1>
-          <p>{{ prop.card.shortTitle }}</p>
+          <p><RouterLink :to="{ name: 'organization', params: { id: prop.card.id_organization } }">{{ prop.card.shortTitle }}</RouterLink></p>
 
           <div class="container_for_attr_cards">
             <div v-if="prop.card.qualification.length > 0" class="container_for_text_and_logo">
@@ -53,7 +55,10 @@ imageUrl.value = new URL(`/public/${prop.card.logo}`, import.meta.url)
                 <path d="M32.5144 3.2449H28.4882V2.47643C28.4882 1.11094 27.3777 0 26.0131 0C24.6476 0 23.5367 1.11094 23.5367 2.47643V3.2449H19.0593V2.47643C19.0593 1.11094 17.9488 0 16.5842 0C15.2178 0 14.1064 1.11094 14.1064 2.47643V3.2449H9.6304V2.47643C9.6304 1.11094 8.52034 0 7.1553 0C5.78893 0 4.67755 1.11094 4.67755 2.47643V3.2449H0.662855C0.296517 3.2449 0 3.54141 0 3.90775V35.7601C0 36.126 0.296517 36.423 0.662855 36.423H32.5153C32.8816 36.423 33.1781 36.126 33.1781 35.7601V3.90775C33.1772 3.54141 32.8807 3.2449 32.5144 3.2449ZM24.8619 2.47643C24.8619 1.84141 25.3781 1.32571 26.0126 1.32571C26.6463 1.32571 27.162 1.84185 27.162 2.47643V5.86848C27.162 6.50305 26.6463 7.01919 26.0126 7.01919C25.3781 7.01919 24.8619 6.50305 24.8619 5.86848V2.47643ZM16.5837 1.32527C17.2174 1.32527 17.7331 1.84141 17.7331 2.47598V5.86803C17.7331 6.50261 17.2174 7.01875 16.5837 7.01875C15.9483 7.01875 15.4317 6.50261 15.4317 5.86803V3.98022C15.4344 3.95592 15.4392 3.9325 15.4392 3.90731C15.4392 3.88212 15.4344 3.8587 15.4317 3.8344V2.47598C15.4317 1.84141 15.9487 1.32527 16.5837 1.32527ZM6.00281 2.47643C6.00281 1.84141 6.51984 1.32571 7.15486 1.32571C7.78855 1.32571 8.30425 1.84185 8.30425 2.47643V5.86848C8.30425 6.50305 7.78855 7.01919 7.15486 7.01919C6.5194 7.01919 6.00281 6.50305 6.00281 5.86848V2.47643ZM31.8515 35.0968H1.32483V4.57016H4.67666V5.86803C4.67666 7.23352 5.78849 8.34446 7.15442 8.34446C8.51901 8.34446 9.62952 7.23352 9.62952 5.86803V4.57016H14.1056V5.86803C14.1056 7.23352 15.2174 8.34446 16.5833 8.34446C17.9479 8.34446 19.0584 7.23352 19.0584 5.86803V4.57016H23.5358V5.86803C23.5358 7.23352 24.6467 8.34446 26.0122 8.34446C27.3768 8.34446 28.4873 7.23352 28.4873 5.86803V4.57016H31.8506V35.0968H31.8515Z" fill="#071937"/>
                 <path d="M28.3795 13.2307L24.9971 17.3996L23.5861 16.0527C23.3214 15.7999 22.9021 15.8096 22.6489 16.0743C22.3961 16.3395 22.4058 16.7588 22.6705 17.0116L24.6012 18.8548C24.7249 18.9728 24.8889 19.0382 25.059 19.0382C25.0731 19.0382 25.0868 19.0377 25.101 19.0368C25.2857 19.0253 25.4572 18.9365 25.5738 18.7929L29.4091 14.0663C29.6398 13.7822 29.596 13.3646 29.3119 13.1339C29.0277 12.9028 28.6101 12.9465 28.3795 13.2307Z" fill="#071937"/>
               </svg>
-              <span class="range_edu"> {{ prop.card.range_years + ' года' }}</span>
+              <span v-if="prop.card.range_years > 0" class="range_edu"> {{ prop.card.range_years < 5 && prop.card.range_years > 1 ? prop.card.range_years  + ' года' : prop.card.range_years >= 5 ?  prop.card.range_years  + ' лет' : prop.card.range_years  + ' год'}}</span>
+              <span v-if="prop.card.range_mounth > 0" class="range_edu">{{ prop.card.range_mounth > 1 && prop.card.range_mounth < 5 ? prop.card.range_mounth + ' месяца' : prop.card.range_mounth <= 1 ? prop.card.range_mounth + ' месяц' : prop.card.range_mounth + ' месяцев'}}</span>
+              <span v-if="prop.card.range_weeks > 0" class="range_edu">{{ prop.card.range_weeks > 1 && prop.card.range_weeks < 5 ? prop.card.range_weeks + ' недели' : prop.card.range_weeks <= 1 ? prop.card.range_weeks + ' неделя' : prop.card.range_weeks + ' недель'}}</span>
+              <span v-if="prop.card.range_days > 0" class="range_edu">{{ prop.card.range_days > 1 && prop.card.range_days < 5 ? prop.card.range_days + ' дня' : prop.card.range_days <= 1 ? prop.card.range_days + ' день' : prop.card.range_days + ' дней'}}</span>
             </div>
 
             <div class="container_for_text_and_logo" v-if="prop.card.language">
@@ -171,7 +176,7 @@ span {
     gap: 15px;
   }
   .card {
-    padding: 15px 0;
+    padding: 15px;
     flex-direction: column;
   }
   .text_block h1, p {

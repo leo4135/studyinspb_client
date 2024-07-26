@@ -24,31 +24,13 @@ const resetAllFilters = () => {
 }
 
 const store = useCounterStore();
-const {educationTabs} = storeToRefs(store)
-educationTabs.value = "государственные вузы";
 
-// подписываемся на обновления стора
-store.$subscribe(() => {
-  store.dataOrganizations.forEach(item => {
-    // при переходе между вкладками, необходимо обнулить массив с организацями, чтобы снова проитерироваться
-    // по ним и запушить в массив только те, что подходят по типу
-    if (item.type == educationTabs.value) {
-      itemsOrganizations.value.push(item.shortTitle);
-      itemsTypes.value.push(item.type);
-    }
-  });
-})
-
-watch(educationTabs, () => {
-  itemsOrganizations.value = [];
-  itemsTypes.value = [];
-})
 
 const resetFilters = () => {
-  delete dataFromInputs.title
-  delete dataFromInputs.type
+  Object.keys(dataFromInputs).forEach(key => {
+    delete dataFromInputs[key];
+  })
 }
-
 
 </script>
 
@@ -60,10 +42,8 @@ const resetFilters = () => {
                   multiple
                   chips
                   label="наименование организации"
-                  :items="[...new Set(itemsOrganizations)]"
                   :single-line='true'
-                  v-model="dataFromInputs.title"
-                  @input.native = "dataFromInputs.title = $event.srcElement.value"
+                  v-model="dataFromInputs.shortTitle"
       ></v-combobox>
       <button class="search" @click="sendDataFromInputs">Найти</button>
     </div>
@@ -75,30 +55,23 @@ const resetFilters = () => {
             <div class="container_for_filtres">
               <v-combobox
                   class="search_input"
-                  clearable
-                  multiple
+                  style="max-width: max-content"
                   chips
                   :single-line='true'
-                  label="тип организации"
-                  :items="[... new Set(itemsTypes)]"
-                  v-model="dataFromInputs.type"
-                  @input.native = "dataFromInputs.type = $event.srcElement.value"
-              ></v-combobox>
-              <v-combobox
-                  class="search_input"
-                  style="max-width: max-content"
-                  chips
                   clearable multiple
+                  :items="['Математические и естественные науки', 'Инженерное дело, технологии и технические науки', 'Здравоохранение и медицинские науки', 'Сельское хозяйство и сельскохозяйственные науки', 'Науки об обществе', 'Гуманитарные науки', 'Искусство и культура', 'Образование и педагогические науки', 'Оборона и безопасность государства. Военные науки']"
+                  v-model="dataFromInputs.okso"
                   label="оксо"
-                  :items="[]"
               ></v-combobox>
               <v-combobox
                   class="search_input"
                   style="max-width: max-content"
                   chips
                   clearable multiple
+                  :single-line='true'
                   label="вак"
-                  :items="[]"
+                  :items="['Естественные науки','Технические науки', 'Медицинские науки', 'Сельскохозяйственные науки','Социальные и гуманитарные науки']"
+                  v-model="dataFromInputs.vak"
               ></v-combobox>
               <button class="filtres font_edit" @click="sendDataFromInputs">
                 <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -206,5 +179,35 @@ const resetFilters = () => {
     max-width: 100%;
   }
 }
+
+@media screen and (max-width: 800px) {
+  .container_for_main_filtres {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  .search_input_main {
+    width: 100%;
+    max-width: 100% !important;
+  }
+  .search {
+    margin-left: 0;
+  }
+
+  .container_for_filtres {
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+  .price {
+    gap: 20px;
+    flex-direction: column;
+    width: 100%;
+  }
+  .filtres {
+    width: 60%;
+  }
+}
+
 
 </style>
