@@ -7,7 +7,7 @@ import CardEducation from "./PageForProgramms_Components/CardEducation.vue";
 
 const store = useCounterStore();
 const {calculatorEGE} = storeToRefs(store);
-const url = 'http://studyinspb.ru/';
+const url = import.meta.env.VITE_API_URL;
 let filtredOrNo = ref(false)
 let state = ref(true);
 let currList = ref([]);

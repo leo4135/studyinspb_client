@@ -73,8 +73,8 @@ imageUrl.value = new URL(`/public/${prop.card.logo}`, import.meta.url)
 
           <div class="container_for_attr_cards">
             <div class="mesta">
-              <p>количество мест: бюджет <span class="budget">{{ prop.card.budget }}</span></p>
-              <p>контракт: <span class="contr">{{ prop.card.contract }}</span></p>
+              <p v-if="prop.card.budget > 0">количество мест: бюджет <span class="budget">{{ prop.card.budget }}</span></p>
+              <p v-if="prop.card.contract > 0"><span v-if="prop.card.budget <= 0" style="font-weight: 600;">количество мест: </span>контракт: <span class="contr">{{ prop.card.contract }}</span></p>
             </div>
             <div class="price">
               <p v-if="prop.card.cost_rus">стоимость обучения в год для граждан РФ: <span class="budget">{{ prop.card.cost_rus }}</span></p>

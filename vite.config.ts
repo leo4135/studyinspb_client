@@ -12,4 +12,7 @@ export default defineConfig({
       "@": resolve(projectRootDir),
     },
   },
+  build: {
+    outDir: `../studyinspb_backend/${new Date().getDay()}_${new Date().getMonth()}_${new Date().getFullYear()}`
+  }
 })
