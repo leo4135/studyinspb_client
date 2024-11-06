@@ -117,6 +117,14 @@ setTimeout(() => {
               <span class="container_for_text_and_logo_education_programs">программ <br> ДПО</span>
             </div>
 
+            <div class="container_for_text_and_logo" v-if="currentOrganization.countPrograms.bvo > 0">
+              <div class="group_for_svg_and_count_other">
+                <div class="fake_svg"></div>
+                <span> {{ currentOrganization.countPrograms.bvo }} </span>
+              </div>
+              <span class="container_for_text_and_logo_education_programs">программ <br> базового высшего образования</span>
+            </div>
+
           </div>
 
           <div >

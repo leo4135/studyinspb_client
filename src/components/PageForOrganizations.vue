@@ -148,6 +148,8 @@ setTimeout(() => {
     ></v-progress-circular>
 
   </div>
+  
+ 
   <CardOrganization v-else v-for="card in currList" :card="card" :key="card.id"></CardOrganization>
 
   <div v-if="Object.keys(filtres).length < 1" class="pagination">
@@ -203,6 +205,8 @@ setTimeout(() => {
 
     </button>
   </div>
+
+
 
 </template>
 

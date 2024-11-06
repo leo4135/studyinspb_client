@@ -11,28 +11,37 @@ const props = defineProps<{
 const currentCard = ref("");
 const currentOrganization = ref([]);
 let imageUrl = ref('');
-
-
+const url = import.meta.env.VITE_API_URL;
+let state = ref(true);
 
 async function getData() {
-  await fetch('http://studyinspb.ru/api/education_programs/')
+  await fetch(url + 'api/education_programs/')
       .then(res => res.json())
       .then(data => {
+        console.log('Тут запрос к программам:');
+        console.log(data);
+        
         currentCard.value = data.find(item => item.id == props.id);
-        getDataOrganization();
+        console.log('сюда зашло?');
+      
       })
+    
 }
 getData();
 
 async function getDataOrganization() {
-  await fetch('http://studyinspb.ru/api/organizations/')
+  await fetch(url + 'api/organizations/')
       .then(res => res.json())
       .then(data => {
+        console.log('Тут запрос к организациям:');
+        console.log(data);
         currentOrganization.value = data.find(item => item.id == currentCard.value.id_organization);
         imageUrl.value = new URL(`/public/${currentOrganization.value.logo}`, import.meta.url)
       })
+      
+     state.value = false;
 }
-
+getDataOrganization();
 
 setTimeout(() => {
   window.scrollTo({
@@ -45,7 +54,16 @@ setTimeout(() => {
 </script>
 
 <template>
-  <div class="container_for_custom_color">
+
+<div class="preloader" v-if="state">
+    <v-progress-circular
+        color="primary"
+        indeterminate
+    ></v-progress-circular>
+
+  </div>
+
+  <div v-if="!state" class="container_for_custom_color">
     <div class="wrapper">
       <div class="container_for_logo_and_main_info">
         <div class="logo_img" :style="{ backgroundImage: `url(${imageUrl})` }"></div>
@@ -105,8 +123,11 @@ setTimeout(() => {
                     d="M28.3795 13.2307L24.9971 17.3996L23.5861 16.0527C23.3214 15.7999 22.9021 15.8096 22.6489 16.0743C22.3961 16.3395 22.4058 16.7588 22.6705 17.0116L24.6012 18.8548C24.7249 18.9728 24.8889 19.0382 25.059 19.0382C25.0731 19.0382 25.0868 19.0377 25.101 19.0368C25.2857 19.0253 25.4572 18.9365 25.5738 18.7929L29.4091 14.0663C29.6398 13.7822 29.596 13.3646 29.3119 13.1339C29.0277 12.9028 28.6101 12.9465 28.3795 13.2307Z"
                     fill="#071937"/>
               </svg>
-              <span
-                  class="range_edu"> {{ currentCard.range_years + 'года' }}</span>
+            
+              <span v-if="currentCard.range_years > 0" class="range_edu"> {{ currentCard.range_years < 5 && currentCard.range_years > 1 ? currentCard.range_years  + ' года' : currentCard.range_years >= 5 ?  currentCard.range_years  + ' лет' : currentCard.range_years  + ' год'}}</span>
+              <span v-if="currentCard.range_mounth > 0" class="range_edu">{{ currentCard.range_mounth > 1 && currentCard.range_mounth < 5 ? currentCard.range_mounth + ' месяца' : currentCard.range_mounth <= 1 ? currentCard.range_mounth + ' месяц' : currentCard.range_mounth + ' месяцев'}}</span>
+              <span v-if="currentCard.range_weeks > 0" class="range_edu">{{ currentCard.range_weeks > 1 && currentCard.range_weeks < 5 ? prop.card.range_weeks + ' недели' : currentCard.range_weeks <= 1 ? currentCard.range_weeks + ' неделя' : currentCard.range_weeks + ' недель'}}</span>
+              <span v-if="currentCard.range_days > 0" class="range_edu">{{ currentCard.range_days > 1 && currentCard.range_days < 5 ? currentCard.range_days + ' дня' : currentCard.range_days <= 1 ? currentCard.range_days + ' день' : currentCard.range_days + ' дней'}}</span>
             </div>
 
             <div class="container_for_text_and_logo">
@@ -126,11 +147,11 @@ setTimeout(() => {
 
           <div class="container_for_attr_cards">
             <div class="mesta">
-              <p>количество мест: бюджет: <span class="budget">{{
-                  currentCard.numberBudgetPlaces == null ? 0 : currentCard.budget
+              <p v-if="currentCard.budget > 0">количество мест: бюджет: <span class="budget">{{
+                  currentCard.budget
                 }}</span></p>
-              <p>контракт: <span class="contr">{{
-                  currentCard.numberContractPlaces == null ? 0 : currentCard.contract
+              <p v-if="currentCard.contract > 0">контракт: <span class="contr">{{
+                  currentCard.contract
                 }}</span></p>
             </div>
             <div class="price">
@@ -173,6 +194,12 @@ setTimeout(() => {
 </template>
 
 <style scoped>
+
+.preloader {
+  display: flex;
+  padding: 100px;
+  justify-content: center;
+}
 
 h1 {
   font-size: 24px;

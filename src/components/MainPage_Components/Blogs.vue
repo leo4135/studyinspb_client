@@ -27,31 +27,18 @@ let curWindowWidth = ref(window.innerWidth);
           >
 
             <swiper-slide>
-              <iframe width="100%" height="315"
-                      src="https://www.youtube.com/embed/E_ABlKcziS8?si=88qFeF3FKuPnnYr8&amp;controls=0"
-                      title="YouTube video player" frameborder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              <iframe src="https://vk.com/video_ext.php?oid=-94&id=456240078&hd=2" width="100%" height="315" allow="encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" frameborder="0" allowfullscreen></iframe>
+            </swiper-slide>
+
+            <swiper-slide>
+
+              <iframe src="https://vk.com/video_ext.php?oid=-61195360&id=456239596&hd=2" width="100%" height="315" allow="encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" frameborder="0" allowfullscreen></iframe>
 
             </swiper-slide>
 
             <swiper-slide>
 
-              <iframe width="100%" height="315"
-                      src="https://www.youtube.com/embed/yUvMswQ-58o?si=kRNXZISpz8HZS33m&amp;controls=0"
-                      title="YouTube video player" frameborder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
-            </swiper-slide>
-
-            <swiper-slide>
-
-              <iframe width="100%" height="315"
-                      src="https://www.youtube.com/embed/a9JPq9b4bZI?si=ML1blV-GE5pbwcPs&amp;controls=0"
-                      title="YouTube video player" frameborder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              <iframe src="https://vk.com/video_ext.php?oid=-52298374&id=456240967&hd=2" width="100%" height="315" allow="encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" frameborder="0" allowfullscreen></iframe>
 
             </swiper-slide>
 

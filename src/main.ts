@@ -11,6 +11,7 @@ import PageForContacts from "./components/PageForContacts.vue";
 import Calculator from "./components/Calculator.vue";
 import PageForNews from "./components/PageForNews.vue";
 import bagger from "./components/ListFromJob.vue"
+import Chatbird from './components/Chatbird.vue';
 import {createPinia, defineStore} from 'pinia';
 // vuetify
 import '@mdi/font/css/materialdesignicons.css';
@@ -18,6 +19,8 @@ import 'vuetify/styles';
 import {createVuetify} from 'vuetify';
 import * as components from 'vuetify/components';
 import * as directives from 'vuetify/directives';
+import './yandex-metrica'
+
 
 
 
@@ -40,13 +43,18 @@ const routes = [
     {path: '/organization/:id', name: "organization", component: PageForOrganizationCard, props: true},
     {path: '/news/:id', name: "news", component: PageForNews, props: true},
     {path: '/calculator', name: 'calculator', component: Calculator, props: true},
+    {path: '/chatbird', name: 'chatbird', component: Chatbird, props: true},
     {path: '/bugs', name: 'bugs', component: bagger, props: true},
 ]
 
 const router = createRouter({
     history: createWebHistory(),
     routes,
-})
+});
+
+router.afterEach((to) => {
+    ym(98749918, 'hit', to.fullPath);
+  });
 
 const pinia = createPinia()
 
